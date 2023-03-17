@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">iorbit-Health</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="address">iOrbit Digital Technologies Pvt. Ltd.\n No. 58, 3rd Main, Santhrupthi Nagar \n J P Nagar, 7th Phase \n Bangalore 560078</string>
+
+    <string-array name="bloodgroup">
+        <item>O +ve</item>
+        <item>O -ve</item>
+        <item>A +ve</item>
+        <item>A -ve</item>
+        <item>B +ve</item>
+        <item>B -ve</item>
+        <item>AB +ve</item>
+        <item>AB -ve</item>
+    </string-array>
+</resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/navigation_addpatient"
+        android:icon="@drawable/ic_person_add_black_new_color"
+        android:title="Add Member"
+        app:labelVisibilityMode="labeled"/>
+
+    <item
+        android:id="@+id/navigation_search_patient"
+        android:icon="@drawable/ic_pageview_view_doctor"
+        android:title="Search Member"
+        app:labelVisibilityMode="labeled"/>
+
+
+
+
+
+</menu>

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "114078771121",
+    "project_id": "iorbithealth",
+    "storage_bucket": "iorbithealth.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:114078771121:android:9216b75502aa2b7fc13f90",
+        "android_client_info": {
+          "package_name": "com.iorbit.iorbithealthapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "114078771121-64v910muls3fvks6thgrvbj8iv9j14jn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.iorbit.iorbithealthapp",
+            "certificate_hash": "596910d09c9135cdd67ffa77a0ca8401950cc1dd"
+          }
+        },
+        {
+          "client_id": "114078771121-prpuc3frgmecmusj1jpgtl2287ggp82v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACfDDvYvBx_yLp6ozA5vMRGR0d6RrUEz4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "114078771121-prpuc3frgmecmusj1jpgtl2287ggp82v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

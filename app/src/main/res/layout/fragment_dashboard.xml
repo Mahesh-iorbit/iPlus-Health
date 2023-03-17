@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_dashboard"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/cordLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/bottom_navigation">
+
+            <LinearLayout
+                android:id="@+id/layoutdesign"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="2.5dp"
+                        android:layout_weight="1">
+
+                        <com.google.android.material.card.MaterialCardView
+                            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                            android:id="@+id/quickTest"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginRight="2dp"
+                            android:layout_marginBottom="2dp"
+                            android:layout_weight="1"
+                            card_view:cardBackgroundColor="@android:color/white"
+                            card_view:cardCornerRadius="20dp"
+                            card_view:cardElevation="4dp">
+
+                            <LinearLayout
+                                android:id="@+id/ecg_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/ECG_count"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="32dp"
+                                    android:layout_alignParentBottom="true"
+                                    android:gravity="center"
+
+                                    android:textColor="@color/ECG"
+                                    android:textSize="20dp"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_gravity="center"
+                                    android:padding="7dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ecgp" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="32dp"
+                                    android:layout_alignParentBottom="true"
+                                    android:gravity="center"
+                                    android:text=" ECG "
+                                    android:textColor="@color/ECG"
+                                    android:textStyle="bold" />
+
+
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="2.5dp"
+                        android:layout_weight="1">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/add_patient"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginRight="2dp"
+                            android:layout_marginBottom="2dp"
+                            android:layout_weight="1"
+                            android:paddingLeft="6dp"
+                            android:paddingTop="6dp"
+                            android:paddingRight="6dp"
+                            app:cardBackgroundColor="@android:color/white"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="4dp">
+
+                            <LinearLayout
+                                android:id="@+id/bp_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+
+                                <TextView
+                                    android:id="@+id/BP_count"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="32dp"
+                                    android:layout_alignParentBottom="true"
+                                    android:gravity="center"
+
+                                    android:textColor="@color/BloodPressure"
+                                    android:textSize="20dp"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:layout_width="54dp"
+                                    android:layout_height="60dp"
+                                    android:layout_gravity="center"
+                                    android:padding="7dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/bpsym" />
+
+                                <TextView
+                                    android:id="@+id/textBp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="32dp"
+                                    android:layout_alignParentBottom="true"
+                                    android:gravity="center"
+                                    android:text="BP"
+                                    android:textColor="@color/BloodPressure"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="2.5dp"
+                        android:layout_weight="1">
+
+                        <com.google.android.material.card.MaterialCardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                            android:id="@+id/TEMP"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginRight="2dp"
+                            android:layout_marginBottom="2dp"
+                            android:layout_weight="1"
+                            card_view:cardBackgroundColor="@android:color/white"
+                            card_view:cardCornerRadius="20dp"
+                            card_view:cardElevation="4dp">
+
+                            <LinearLayout
+                                android:id="@+id/temp_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+
+                                <TextView
+                                    android:id="@+id/Temp_count"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="32dp"
+                                    android:layout_alignParentBottom="true"
+                                    android:gravity="center"
+
+                                    android:textColor="@color/Temp"
+                                    android:textSize="20dp"
+                                    android:textStyle="bold" />
+
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_gravity="center"
+                                    android:padding="7dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/tempsym" />
+
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="32dp"
+                                    android:layout_alignParentBottom="true"
+                                    android:gravity="center"
+                                    android:text="TEMP"
+                                    android:textColor="@color/Temp"
+                                    android:textStyle="bold"
+
+                                    />
+
+
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="2.5dp"
+                        android:layout_weight="1">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/BPM"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginRight="2dp"
+                            android:layout_marginBottom="2dp"
+                            android:layout_weight="1"
+                            android:paddingLeft="6dp"
+                            android:paddingTop="6dp"
+                            android:paddingRight="6dp"
+                            app:cardBackgroundColor="@android:color/white"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="4dp">
+
+                            <LinearLayout
+                                android:id="@+id/bpm_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+
+                                <TextView
+                                    android:id="@+id/Bpm_count"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="32dp"
+                                    android:layout_alignParentBottom="true"
+                                    android:gravity="center"
+
+                                    android:textColor="@color/Temp"
+                                    android:textSize="20dp"
+                                    android:textStyle="bold" />
+
+
+                                <ImageView
+                                    android:layout_width="55dp"
+                                    android:layout_height="60dp"
+                                    android:layout_gravity="center"
+                                    android:padding="7dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/bpmsys" />
+
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="32dp"
+                                    android:layout_alignParentBottom="true"
+                                    android:gravity="center"
+                                    android:text="BPM"
+                                    android:textColor="@color/Temp"
+                                    android:textStyle="bold" />
+
+
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="2.5dp"
+                        android:layout_weight="1">
+
+                        <com.google.android.material.card.MaterialCardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                            android:id="@+id/SPO2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginRight="2dp"
+                            android:layout_marginBottom="2dp"
+                            android:layout_weight="1"
+                            android:paddingLeft="6dp"
+                            android:paddingTop="6dp"
+                            android:paddingRight="6dp"
+                            card_view:cardBackgroundColor="@android:color/white"
+                            card_view:cardCornerRadius="20dp"
+                            card_view:cardElevation="4dp">
+
+                            <LinearLayout
+                                android:id="@+id/oxygen_layout"
+                                android:layout_width="match_parent"
+
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+
+                                <TextView
+                                    android:id="@+id/SPO2_count"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="32dp"
+                                    android:layout_alignParentBottom="true"
+                                    android:gravity="center"
+
+                                    android:textColor="@color/SPO2"
+                                    android:textSize="20dp"
+                                    android:textStyle="bold" />
+
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_gravity="center"
+                                    android:padding="7dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/spo2sym" />
+
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="32dp"
+                                    android:layout_alignParentBottom="true"
+                                    android:gravity="center"
+                                    android:text="SP02"
+                                    android:textColor="@color/SPO2"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="2.5dp"
+                        android:layout_weight="1">
+
+                        <com.google.android.material.card.MaterialCardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                            android:id="@+id/search_patient"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginRight="2dp"
+                            android:layout_marginBottom="2dp"
+                            android:layout_weight="1"
+                            card_view:cardBackgroundColor="@android:color/white"
+                            card_view:cardCornerRadius="20dp"
+                            card_view:cardElevation="4dp">
+
+                            <LinearLayout
+                                android:id="@+id/bg_layout"
+
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+
+                                <TextView
+                                    android:id="@+id/BG_count"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="32dp"
+                                    android:layout_alignParentBottom="true"
+                                    android:gravity="center"
+
+                                    android:textColor="@color/BloodGlucose"
+                                    android:textSize="20dp"
+                                    android:textStyle="bold" />
+
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_gravity="center"
+                                    android:padding="7dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/bgsym" />
+
+
+                                <TextView
+                                    android:id="@+id/patFill"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="32dp"
+                                    android:layout_alignParentBottom="true"
+                                    android:gravity="center"
+                                    android:text="BG"
+                                    android:textColor="@color/BloodGlucose"
+                                    android:textStyle="bold" />
+
+
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="2.5dp"
+                        android:layout_weight="1">
+
+
+                        <com.google.android.material.card.MaterialCardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                            android:id="@+id/health_report"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginRight="2dp"
+                            android:layout_marginBottom="2dp"
+                            android:layout_weight="1"
+                            card_view:cardBackgroundColor="@android:color/white"
+                            card_view:cardCornerRadius="20dp"
+                            card_view:cardElevation="4dp">
+
+                            <LinearLayout
+                                android:id="@+id/health_report_layout"
+                                android:layout_width="match_parent"
+
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+
+                                <TextView
+                                    android:id="@+id/health_report_count"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="32dp"
+                                    android:layout_alignParentBottom="true"
+                                    android:gravity="center"
+
+                                    android:textColor="@color/SPO2"
+                                    android:textSize="20dp"
+                                    android:textStyle="bold" />
+
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_gravity="center"
+                                    android:padding="7dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/report" />
+
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="32dp"
+                                    android:layout_alignParentBottom="true"
+                                    android:gravity="center"
+                                    android:text="Health Report"
+                                    android:textColor="@color/Temp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="2.5dp"
+                        android:layout_weight="1">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/data_sync"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginRight="2dp"
+                            android:layout_marginBottom="2dp"
+                            android:layout_weight="1"
+                            android:paddingLeft="6dp"
+                            android:paddingTop="6dp"
+                            android:paddingRight="6dp"
+                            app:cardBackgroundColor="@android:color/white"
+                            app:cardCornerRadius="20dp"
+                            app:cardElevation="4dp">
+
+                            <LinearLayout
+                                android:id="@+id/data_sync_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+
+                                <TextView
+                                    android:id="@+id/data_sync_count"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="32dp"
+                                    android:layout_alignParentBottom="true"
+                                    android:gravity="center"
+
+                                    android:textColor="@color/Temp"
+                                    android:textSize="20dp"
+                                    android:textStyle="bold" />
+
+
+                                <ImageView
+                                    android:layout_width="60dp"
+                                    android:layout_height="60dp"
+                                    android:layout_gravity="center"
+                                    android:padding="7dp"
+                                    android:scaleType="fitCenter"
+                                    android:src="@drawable/ic_sync_blackadmin_24dp" />
+
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="32dp"
+                                    android:layout_alignParentBottom="true"
+                                    android:gravity="center"
+                                    android:text="Data Sync"
+                                    android:textColor="@color/SPO2"
+                                    android:textStyle="bold" />
+
+
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:background="@color/colorPrimary"
+            android:showAsAction="always|withText"
+            app:elevation="10dp"
+            app:itemBackground="@color/colorPrimary"
+            app:itemIconTint="#fff"
+            app:itemTextAppearanceActive="@style/BottomNavigationViewTextStyle"
+            app:itemTextAppearanceInactive="@style/BottomNavigationViewTextStyle"
+            app:itemTextColor="#fff"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/bottom_nav_menu" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</RelativeLayout>
+
+
+
+
+
+
+
+
+

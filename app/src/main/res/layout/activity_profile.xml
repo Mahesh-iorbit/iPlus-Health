@@ -1,0 +1,749 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:orientation="vertical"
+    tools:context="com.iorbit.iorbithealthapp.ui.Activity.ProfileActivity">
+
+    <ScrollView
+        android:fadeScrollbars="false"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:orientation="horizontal">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_first_name"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="First Name"
+                    app:counterMaxLength="10"
+                    android:layout_weight="1"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteX="10dp"
+                    tools:layout_editor_absoluteY="274dp">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etFirstName"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="10dp"
+
+
+                        />
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:orientation="horizontal">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_last_name"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Last Name"
+                    app:counterMaxLength="10"
+                    android:layout_weight="1"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteX="10dp"
+                    tools:layout_editor_absoluteY="274dp">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etLastName"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="10dp"
+
+
+                        />
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:orientation="horizontal">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_email"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Email "
+                    app:counterMaxLength="10"
+                    android:layout_weight="1"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteX="10dp"
+                    tools:layout_editor_absoluteY="274dp">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etemail"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="10dp"
+
+                        />
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </LinearLayout>
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/phonenumber"
+                android:orientation="horizontal"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputETpid"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Member ID"
+                    app:counterMaxLength="10"
+                    android:layout_marginTop="4dp"
+                    tools:ignore="MissingConstraints">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPID"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:digits="aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ0123456789-"
+
+                        android:maxLines="1"
+                        android:textColor="@color/grey"
+                        android:inputType="textCapCharacters|textNoSuggestions|textVisiblePassword"
+                        android:importantForAutofill="noExcludeDescendants"
+
+
+
+
+                        />
+
+                    <TextView
+                        android:id="@+id/generate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="-50dp"
+                        android:layout_marginEnd="40dp"
+                        android:gravity="right"
+                        android:text="Generate"
+                        android:visibility="invisible"
+                        android:textColor="@color/colorPrimary"
+                        android:textStyle="bold" />
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <!--                <TextView-->
+                <!--                    android:id="@+id/prefix"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_gravity="center_vertical"-->
+                <!--                    android:padding="15dp"-->
+                <!--                    android:layout_marginTop="13dp"-->
+                <!--                    android:text="CUUI00"-->
+                <!--                    android:textSize="15sp"-->
+                <!--                    android:textStyle="bold"-->
+                <!--                    android:gravity="left|center"-->
+                <!--                    android:layout_marginRight="10dp" />-->
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:orientation="horizontal">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputAge"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Age (y)"
+                    app:counterMaxLength="10"
+                    android:layout_weight="1"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteX="10dp"
+                    tools:layout_editor_absoluteY="274dp">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etAge"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="10dp"
+                        android:maxLines="1"
+                        android:maxLength="2"
+                        android:inputType="number"
+
+                        />
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/pho"
+                android:orientation="horizontal"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:weightSum="100">
+
+
+
+                <EditText
+                    android:id="@+id/MobileNumberCode"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="25"
+                    android:background="@drawable/countrycode_border"
+                    android:paddingTop="9dp"
+                    android:paddingBottom="12dp"
+                    android:layout_marginRight="10dp"
+
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginLeft="5dp"
+
+                    android:textAlignment="center"
+
+
+                    tools:ignore="RtlCompat" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputConatctnumber"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="75"
+                    app:errorEnabled="true"
+                    tools:ignore="MissingConstraints">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etContactNo"
+                        android:layout_width="match_parent"
+                        android:hint="Mobile Number"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:importantForAutofill="noExcludeDescendants"
+                        android:layout_marginRight="5dp"
+
+                        />
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </LinearLayout>
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/etDob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="Select Gender"
+                android:textSize="13sp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                tools:text="Select Gender" />
+
+
+
+            <RadioGroup
+                android:id="@+id/rggender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center_horizontal"
+                android:checkedButton="@id/rbMale">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/rbMale"
+                    android:text="Male"
+                    android:textSize="16sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:text="Female"
+                    android:textSize="16sp"
+                    android:id="@+id/rbFemale"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+            </RadioGroup>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/etcalibration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="Standard BP"
+                android:textSize="13sp"
+                android:gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:drawableRight="@drawable/ic_help_black_24dp"
+                android:drawablePadding="8dp"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputsbp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="SBP (mmHg)"
+                    app:counterMaxLength="10"
+                    android:layout_weight="1"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteX="10dp"
+                    tools:layout_editor_absoluteY="274dp">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etsbp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="10dp"
+                        android:maxLines="1"
+                        android:maxLength="3"
+                        android:inputType="number"
+
+                        />
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputdbp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="DBP (mmHg)"
+                    app:counterMaxLength="10"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteX="10dp"
+                    tools:layout_editor_absoluteY="274dp">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etdbp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:inputType="number"
+                        android:maxLength="3"
+                        android:maxLines="1"
+
+                        />
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputCity"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="City"
+                app:counterMaxLength="10"
+                android:layout_weight="1"
+                app:errorEnabled="true"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="10dp"
+                tools:layout_editor_absoluteY="274dp">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etCity"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="10dp"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/more"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginRight="20dp"
+                android:gravity="start"
+                android:textColor="#0025FF"
+                android:text="+ More Information"/>
+
+            <LinearLayout
+                android:id="@+id/moreInfo"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="10dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    app:endIconMode="clear_text"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextHieght"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:digits="0123456789."
+                        android:hint="Height (in cms)"
+                        android:maxLength="4"
+                        android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:endIconMode="clear_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextWieght"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:digits="0123456789."
+                        android:hint="weight (in kgs)"
+                        android:maxLength="4"
+                        android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <TextView
+                    android:id="@+id/textViewBloodgroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textViewWieghtmessage"
+                    android:layout_centerHorizontal="true"
+                    android:text="Bloodgroup"
+                    android:layout_marginTop="10dp"
+                    android:textSize="13sp" />
+
+                <Spinner
+                    android:id="@+id/editTextOPositive"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/activity_text_height"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:entries="@array/bloodgroup">
+
+                </Spinner>
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/etdiabetic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="30dp"
+                    android:maxLines="1"
+                    android:text="Diabetes"
+                    android:textSize="13sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <RadioGroup
+                        android:id="@+id/rgdiabetic"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/etdiabetic"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="20dp"
+                        android:checkedButton="@id/rbMale"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal"
+                        android:padding="15dp"
+                        android:weightSum="2">
+
+                        <RadioButton
+                            android:id="@+id/yesdiabetic"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Yes"/>
+
+                        <RadioButton
+                            android:id="@+id/nodiabetic"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="No"/>
+
+                    </RadioGroup>
+
+                </LinearLayout>
+
+
+
+                <TextView
+                    android:id="@+id/etBp1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="30dp"
+                    android:maxLines="1"
+                    android:text="Hypertension"
+                    android:textSize="13sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="2">
+
+                    <RadioGroup
+                        android:id="@+id/rgBp1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/etdiabetic"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:checkedButton="@id/rbMale"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal"
+                        android:padding="15dp"
+                        android:weightSum="2">
+
+                        <RadioButton
+                            android:id="@+id/low"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Yes"/>
+
+                        <RadioButton
+                            android:id="@+id/normal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="No"/>
+
+
+                    </RadioGroup>
+
+                    <TextView
+                        android:id="@+id/etsmoking"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:maxLines="1"
+                        android:text="Smoker"
+                        android:textSize="13sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_weight="3">
+
+                        <RadioGroup
+                            android:id="@+id/smoking"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginBottom="10dp"
+                            android:checkedButton="@id/rbMale"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal"
+                            android:padding="15dp"
+                            android:weightSum="2">
+
+                            <RadioButton
+                                android:id="@+id/Neversmoke"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Yes"/>
+
+                            <RadioButton
+                                android:id="@+id/Ocassionalsmoke"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="No" />
+
+                        </RadioGroup>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/etdrinking"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:maxLines="1"
+                        android:text="Drinking habits"
+                        android:textSize="13sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_weight="3">
+
+                        <RadioGroup
+                            android:id="@+id/drinking"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginBottom="10dp"
+                            android:checkedButton="@id/rbMale"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal"
+                            android:padding="15dp"
+                            android:weightSum="2">
+
+                            <RadioButton
+                                android:id="@+id/Neverdrink"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Yes"/>
+
+                            <RadioButton
+                                android:id="@+id/Ocassionaldrink"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="No" />
+
+
+                        </RadioGroup>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bSignup"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="5dp"
+                app:hintAnimationEnabled="true"
+                android:elevation="8dp"
+                android:textAllCaps="false"
+                android:text="Update Member"
+                android:textColor="@android:color/white" />
+
+
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+</LinearLayout>

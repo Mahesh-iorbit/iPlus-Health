@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:orientation="vertical"
+    android:layout_weight="1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <LinearLayout
+        android:layout_weight="0.1"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Duration"
+            android:textStyle="bold"
+            android:paddingLeft="8dp"
+            android:paddingTop="5dp"
+            android:background="#D5D6E1" />
+
+        <com.warkiz.tickseekbar.TickSeekBar
+            android:padding="15dp"
+            android:layout_gravity="center"
+            android:background="#D5D6E1"
+            android:id="@+id/listener"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tsb_ticks_count="5"
+            app:tsb_thumb_color="@color/colorAccent"
+            app:tsb_thumb_size="16dp"
+            app:tsb_show_tick_marks_type="oval"
+            app:tsb_tick_marks_color="@color/Accept"
+            app:tsb_tick_marks_size="8dp"
+            app:tsb_show_tick_texts="below"
+            app:tsb_tick_texts_color="#000"
+            app:tsb_tick_texts_size="13sp"
+            app:tsb_track_background_color="@color/alert"
+            app:tsb_track_background_size="2dp"
+            app:tsb_track_progress_color="@color/colorPrimaryDark"
+            app:tsb_track_progress_size="3dp" />
+    </LinearLayout>
+    <TextView
+        android:layout_marginTop="5dp"
+        android:layout_weight="0.05"
+        android:text="Health Report"
+        android:gravity="center_vertical|center_horizontal"
+        android:textSize="26dip"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:textStyle="bold"
+        android:layout_marginBottom="5dip"
+        android:typeface="sans"/>
+
+    <TextView
+        android:id="@+id/no_data_textview"
+        android:visibility="gone"
+        android:layout_weight="0.8"
+        android:text="No Data Available"
+        android:textSize="18dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"></TextView>
+    <LinearLayout android:id="@+id/ll_country"
+        android:layout_weight="0.7"
+        android:layout_height="0dp" android:layout_width="fill_parent">
+        <ScrollView android:id="@+id/ScrollView11"
+            android:layout_width="fill_parent" android:layout_height="fill_parent"
+            android:fadeScrollbars="false"
+            android:fillViewport="true">
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content" android:layout_margin="5dip">
+
+                <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/measurement_table"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="*"></TableLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</LinearLayout>
