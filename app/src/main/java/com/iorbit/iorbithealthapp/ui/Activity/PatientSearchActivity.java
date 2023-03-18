@@ -17,7 +17,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.iorbit.iorbithealthapp.Adapters.PatientListAdapter;
@@ -34,6 +34,7 @@ import com.iorbit.iorbithealthapp.R;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,16 +42,14 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class PatientSearchActivity extends AppCompatActivity {
-    public static String ssid_global = "";
-    static DatabaseHelper databaseHelper;
+
+    DatabaseHelper databaseHelper;
     private static RecyclerView recyclerView;
-    ProgressBar loading2;
-    AlertDialog userDialog = null;
-    private ArrayList<String> ssids;
-    private ArrayList<String> name;
-    private EditText patientId;
+    static ImageView loading2;
     private PatientListAdapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
+    private List<PatientModel> patientList = new ArrayList<>();
+    private List<PatientModel> patientListFiltered = new ArrayList<>();
+    EditText patientId;
 
 
     @Override
@@ -62,140 +61,190 @@ public class PatientSearchActivity extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(getApplicationContext());
         loading2 = findViewById(R.id.loading2);
         recyclerView = findViewById(R.id.listView);
-        ssids = new ArrayList<>();
-        name = new ArrayList<>();
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        adapter = new PatientListAdapter(PatientSearchActivity.this,ssids, name);
-
         patientId = findViewById(R.id.patid);
-        patientId.requestFocus();
 
-        patientId.setOnTouchListener(new View.OnTouchListener() {
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        adapter = new PatientListAdapter(PatientSearchActivity.this, patientListFiltered, new PatientListAdapter.ClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int DRAWABLE_LEFT = 0;
-                final int DRAWABLE_TOP = 1;
-                final int DRAWABLE_RIGHT = 2;
-                final int DRAWABLE_BOTTOM = 3;
-                return false;
-            }
-        });
-
-
-        adapter.setOnItemClickListener(new PatientListAdapter.ClickListener() {
-            @Override
-            public void onItemClick(int position, View v) {
-                ssid_global = ssids.get(position);
-                if (!ssid_global.equalsIgnoreCase("No match found..!!")) {
-                    int len = ssids.get(position).length();
-                    for (int x = 0; x < 10 - len; x++) {
-                        ssid_global = "0" + ssid_global;
-                    }
-                    getCurrentPatient(databaseHelper.getPatientsByID(ssids.get(position)));
-                    Intent in = new Intent(getApplicationContext(), DashBoardActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    Utils.closeWaitDialog();
-                    startActivity(in);
-                    finish();
-                }
+            public void onItemclick(PatientModel patientModel) {
+                getCurrentPatient(databaseHelper.getPatientsByID(patientModel.getSsid()));
+                startActivity(new Intent(PatientSearchActivity.this,DashBoardActivity.class));
+                finish();
             }
 
             @Override
-            public void onEditItemClick(int position, View v) {
-                Intent intent = new Intent(PatientSearchActivity.this,ProfileActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("PatientEditDetailsDetails",databaseHelper.getPatientsByID(ssids.get(position)).toString());
+            public void onDeleteclick(PatientModel patientModel) {
+                deletePatientFromDb(patientModel);
+            }
+
+
+            @Override
+            public void onEditclick(PatientModel patientModel) {
+                Intent intent = new Intent(PatientSearchActivity.this, ProfileActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("PatientEditDetailsDetails", String.valueOf(databaseHelper.getPatientsByID(patientModel.getSsid())));
                 startActivityForResult(intent, 15);
+
             }
-
-            @Override
-            public void onDeleteItemClick(final int position, View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(PatientSearchActivity.this);
-                    builder.setMessage("Are you sure you want to delete this member?")
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    RetrofitClient retrofit = new RetrofitClient();
-                                    Retrofit retrofitClient = retrofit.getRetrofitInstance(getApplicationContext());
-                                    if (retrofitClient == null) {
-                                        return;
-                                    }
-
-                                    Call<GetPatientModel> call = retrofitClient.create(ServiceApi.class).deletePatient(ssids.get(position));
-                                    call.enqueue(new Callback<GetPatientModel>() {
-                                        @Override
-                                        public void onResponse(Call<GetPatientModel> call, Response<GetPatientModel> response) {
-                                            if (response.isSuccessful()) {
-                                                try {
-                                                        // handler.deletePatient(ssids.get(position));
-                                                        //ssids.clear();
-                                                        // name.clear();
-                                                        adapter.notifyItemRemoved(position);
-                                                        // handler.getAllPatients();
-                                                        loading2.setVisibility(View.INVISIBLE);
-                                                        Intent intent = new Intent(PatientSearchActivity.this, DashBoardActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                        startActivityForResult(intent, 15);
-                                                    Utils.showSnackbar(findViewById(android.R.id.content),"Member deleted successfully!", Snackbar.LENGTH_SHORT);
-                                                    } catch (Exception e) {
-                                                    Utils.showSnackbar(findViewById(android.R.id.content),"Something went wrong!!", Snackbar.LENGTH_SHORT);
-                                                    }
-                                            }else{
-                                                Utils.closeLoaderDialog();
-                                                Utils.showSnackbar(findViewById(android.R.id.content),"Something went wrong!!", Snackbar.LENGTH_SHORT);
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onFailure(Call<GetPatientModel> call, Throwable t) {
-                                            Utils.closeLoaderDialog();
-                                            Utils.showSnackbar(findViewById(android.R.id.content),"Something went wrong!!", Snackbar.LENGTH_SHORT);
-                                        }
-                                    });
-
-                                }
-                            })
-                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
-                }
-
-
         });
-
-
         recyclerView.setAdapter(adapter);
+        new GetAllPatientsTask(this).execute();
+
         patientId.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                //Log.e("event = ","beforeTextChanged");
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 loading2.setVisibility(View.VISIBLE);
-                String query = patientId.getText().toString();
-                ssids.clear();
-                adapter.notifyDataSetChanged();
-                if (query.trim().length() >= 1) {
-                    searchPIDInDatabase(query);
-                } else {
-                    new GetPatientInDatabase(PatientSearchActivity.this).execute();
-                    //  loading2.setVisibility(View.INVISIBLE);
-                }
+                new FilterPatientListTask(PatientSearchActivity.this).execute(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
-        //showSyncSnackBar();
+    }
+
+    private void deletePatientFromDb(PatientModel patientModel) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(PatientSearchActivity.this);
+        builder.setMessage("Are you sure you want to delete this member?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        RetrofitClient retrofit = new RetrofitClient();
+                        Retrofit retrofitClient = retrofit.getRetrofitInstance(getApplicationContext());
+                        if (retrofitClient == null) {
+                            return;
+                        }
+
+                        Call<GetPatientModel> call = retrofitClient.create(ServiceApi.class).deletePatient(patientModel.getSsid());
+                        call.enqueue(new Callback<GetPatientModel>() {
+                            @Override
+                            public void onResponse(Call<GetPatientModel> call, Response<GetPatientModel> response) {
+                                if (response.isSuccessful()) {
+                                    try {
+                                       databaseHelper.deletePatient(patientModel.getSsid());
+                                            int position = patientListFiltered.indexOf(patientModel);
+                                            patientListFiltered.remove(position);
+                                            adapter.notifyItemRemoved(position);
+                                            adapter.notifyItemRangeChanged(position,patientListFiltered.size());
+                                            Snackbar.make(recyclerView, "Patient deleted", Snackbar.LENGTH_LONG).show();
+
+                                    } catch (Exception e) {
+                                        Utils.showSnackbar(findViewById(android.R.id.content),"Something went wrong!!", Snackbar.LENGTH_SHORT);
+                                    }
+                                }else{
+                                    Utils.closeLoaderDialog();
+                                    Utils.showSnackbar(findViewById(android.R.id.content),"Something went wrong!!", Snackbar.LENGTH_SHORT);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<GetPatientModel> call, Throwable t) {
+                                Utils.closeLoaderDialog();
+                                Utils.showSnackbar(findViewById(android.R.id.content),"Something went wrong!!", Snackbar.LENGTH_SHORT);
+                            }
+                        });
+
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+
+    private static class GetAllPatientsTask extends AsyncTask<Void, Void, List<PatientModel>> {
+
+        private WeakReference<PatientSearchActivity> activityWeakReference;
+
+        GetAllPatientsTask(PatientSearchActivity activity) {
+            activityWeakReference = new WeakReference<>(activity);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            PatientSearchActivity activity = activityWeakReference.get();
+            if (activity != null) {
+                activity.loading2.setVisibility(View.VISIBLE);
+            }
+        }
+
+        @Override
+        protected List<PatientModel> doInBackground(Void... voids) {
+            PatientSearchActivity activity = activityWeakReference.get();
+            if (activity != null) {
+                return activity.databaseHelper.getAllPatients();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<PatientModel> patients) {
+            super.onPostExecute(patients);
+            PatientSearchActivity activity = activityWeakReference.get();
+            if (activity != null) {
+                activity.loading2.setVisibility(View.GONE);
+                if (patients != null) {
+                    activity.patientList.clear();
+                    activity.patientList.addAll(patients);
+                    activity.patientListFiltered.addAll(patients);
+                    activity.adapter.notifyDataSetChanged();
+                } else {
+                    Snackbar.make(activity.recyclerView, "Failed to fetch patients", Snackbar.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
+
+    private static class FilterPatientListTask extends AsyncTask<String, Void, List<PatientModel>> {
+
+        private WeakReference<PatientSearchActivity> activityWeakReference;
+
+        FilterPatientListTask(PatientSearchActivity activity) {
+            activityWeakReference = new WeakReference<>(activity);
+        }
+
+        @Override
+        protected List<PatientModel> doInBackground(String... strings) {
+            PatientSearchActivity activity = activityWeakReference.get();
+            if (activity != null) {
+                String input = strings[0].toLowerCase();
+                List<PatientModel> filteredList = new ArrayList<>();
+                for (PatientModel patient : activity.patientList) {
+                    if (patient.getFirstName().toLowerCase().contains(input)
+                            || patient.getSsid().toLowerCase().contains(input)) {
+                        filteredList.add(patient);
+                    }
+                }
+                return filteredList;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<PatientModel> filteredList) {
+            super.onPostExecute(filteredList);
+            PatientSearchActivity activity = activityWeakReference.get();
+            if (activity != null) {
+                activity.patientListFiltered.clear();
+                if (filteredList != null) {
+                    activity.patientListFiltered.addAll(filteredList);
+                }
+                activity.adapter.notifyDataSetChanged();
+                loading2.setVisibility(View.INVISIBLE);
+            }
+        }
     }
 
     public void getCurrentPatient(PatientModel patients) {
@@ -205,185 +254,7 @@ public class PatientSearchActivity extends AppCompatActivity {
         }
     }
 
-    private void searchPIDInDatabase(final String query) {
-        new SearchPatientInDatabase(PatientSearchActivity.this).execute(query);
 
-    }
-
-    public String replaceLeadingZeros(String s) {
-        s = s.replaceAll("^[0]+", "");
-        if (s.equals("")) {
-            return "0";
-        }
-
-        return s;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        new GetPatientInDatabase(PatientSearchActivity.this).execute();
-    }
-
-
-
-
-
-    public String convert(String str) {
-        int len = str.length();
-        if (len < 10)
-            for (int i = 0; i < 10 - len; i++) {
-                str = "0" + str;
-            }
-        String pid = "";
-        for (int i = 0; i < str.length(); i++) {
-            pid += Integer.toHexString((int) str.charAt(i));
-        }
-        return pid;
-    }
-
-    private void showDialogMessage(String title, String body) {
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title).setMessage(body).setNeutralButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                try {
-                    userDialog.dismiss();
-                } catch (Exception e) {
-                    //
-                }
-            }
-        });
-        userDialog = builder.create();
-        userDialog.show();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-    }
-
-    private String fixString(String s) {
-        if (s.length() == 1) {
-            return "0" + s;
-        } else {
-            return s;
-        }
-    }
-
-
-
-
-
-
-
-
-
-    private class SearchPatientInDatabase extends AsyncTask<String, Void, List<PatientModel>> {
-
-        private WeakReference<PatientSearchActivity> activityReference;
-
-        SearchPatientInDatabase(PatientSearchActivity context) {
-            activityReference = new WeakReference<>(context);
-        }
-
-        @Override
-        protected List<PatientModel> doInBackground(String... params) {
-            List<PatientModel> patientsListTemp = databaseHelper.getAllPatients();
-            List<PatientModel> patientsList = new ArrayList<>();
-            String tempName2 = "";
-            String tempName1 = "";
-            if (patientsListTemp != null) {
-                if (patientsListTemp.size() > 0) {
-                    for (PatientModel p : patientsListTemp) {
-                        if(p.getFirstName().toLowerCase().startsWith(params[0].toLowerCase())||p.getLastName().toLowerCase().startsWith(params[0].toLowerCase()))
-                            patientsList.add(p);
-
-                    }
-                }
-            }
-
-
-            return patientsList;
-        }
-
-        @Override
-        protected void onPostExecute(List<PatientModel> pats) {
-
-            // get a reference to the activity if it is still there
-            PatientSearchActivity activity = activityReference.get();
-            if (activity == null || activity.isFinishing()) return;
-
-            // modify the activity's UI
-            ssids.clear();
-            name.clear();
-            for (PatientModel p : pats) {
-                ssids.add(p.getSsid());
-                name.add(p.getFirstName() + " " + p.getLastName());
-                adapter.notifyDataSetChanged();
-                loading2.setVisibility(ImageView.VISIBLE);
-            }
-
-            if (pats.isEmpty()) { //if not found in database, search from cloud..
-                if (!Connectivity.isConnected(PatientSearchActivity.this)) {
-                    ssids.add("No match found..!!");
-                    adapter.notifyDataSetChanged();
-                } else {
-                    ssids.clear();
-                    //   searchPIDInCloud(patientId.getText().toString().trim());
-                }
-            }
-
-            loading2.setVisibility(View.INVISIBLE);
-        }
-    }
-
-    private class GetPatientInDatabase extends AsyncTask<Void, Void, List<PatientModel>> {
-
-        private WeakReference<PatientSearchActivity> activityReference;
-
-        GetPatientInDatabase(PatientSearchActivity context) {
-            activityReference = new WeakReference<>(context);
-        }
-
-
-        @Override
-        protected List<PatientModel> doInBackground(Void... voids) {
-            return databaseHelper.getAllPatients();
-        }
-
-        @Override
-        protected void onPostExecute(List<PatientModel> pats) {
-
-            // get a reference to the activity if it is still there
-            PatientSearchActivity activity = activityReference.get();
-            if (activity == null || activity.isFinishing()) return;
-
-            // modify the activity's UI
-            ssids.clear();
-
-            for (PatientModel p : pats) {
-                ssids.add(p.getSsid());
-                name.add(p.getFirstName() + " " + p.getLastName());
-                adapter.notifyDataSetChanged();
-                loading2.setVisibility(ImageView.VISIBLE);
-            }
-
-            if (pats.isEmpty()) { //if not found in database, search from cloud..
-                if (!Connectivity.isConnected(PatientSearchActivity.this)) {
-                    ssids.add("No match found..!!");
-                    adapter.notifyDataSetChanged();
-                } else {
-                    ssids.clear();
-                    //   searchPIDInCloud(patientId.getText().toString().trim());
-                }
-            }
-
-            loading2.setVisibility(View.INVISIBLE);
-        }
-    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

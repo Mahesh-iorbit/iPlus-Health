@@ -1,7 +1,5 @@
 package com.iorbit.iorbithealthapp.ui.Activity;
 
-import static com.iorbit.iorbithealthapp.Utils.App.context;
-import static com.iorbit.iorbithealthapp.Utils.App.getContext;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -9,6 +7,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -17,7 +16,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -28,12 +26,9 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,9 +37,6 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -81,14 +73,7 @@ public class DashBoardActivity extends AppCompatActivity implements OnRetryClick
 
     DatabaseHelper databaseHelper;
     ImageView BleIcon,ScanIcon;
-    private static final int REQUEST_LOCATION_PERMISSION_CODE = 1;
     private BluetoothAdapter bluetoothAdapter;
-    ScannerDeviceModel[] scandevices = {
-            new ScannerDeviceModel(R.drawable.pulse_oximeter64, "Pulse Oximeter","(Control D)"),
-            new ScannerDeviceModel(R.drawable.glucometer64, "Blood Glucometer","(Contour plus ELITE)"),
-
-    };
-
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -96,21 +81,7 @@ public class DashBoardActivity extends AppCompatActivity implements OnRetryClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash_board);
 
-        if (ContextCompat.checkSelfPermission(DashBoardActivity.this, Manifest.permission.BLUETOOTH_SCAN)
-                != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.BLUETOOTH_SCAN},
-                    REQUEST_LOCATION_PERMISSION_CODE);
-
-        }
-
-        if (ContextCompat.checkSelfPermission(DashBoardActivity.this, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.CAMERA},
-                    REQUEST_LOCATION_PERMISSION_CODE);
-
-        }
-
-
+        Utils.requestPerm(this);
         getPatientFromCloud();
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         Toolbar toolbar = findViewById(R.id.toolbar_admin_vitals);
@@ -246,11 +217,6 @@ public class DashBoardActivity extends AppCompatActivity implements OnRetryClick
 
         return dialog;
         }
-
-
-
-
-
 
     @SuppressLint("MissingPermission")
     public AlertDialog showBtConnectPopUp() {
@@ -389,6 +355,7 @@ public class DashBoardActivity extends AppCompatActivity implements OnRetryClick
 
         return dialog;
     }
+
     public void getPatientFromCloud() {
         Utils.showLoaderDialog(this);
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
@@ -456,7 +423,6 @@ public class DashBoardActivity extends AppCompatActivity implements OnRetryClick
 
     }
 
-
     @Override
     public void onBackPressed() {
         Utils.showDoubleBackPressExitSnackbar(this);
@@ -465,6 +431,6 @@ public class DashBoardActivity extends AppCompatActivity implements OnRetryClick
     @Override
     public void onRetryClick() {
         getPatientFromCloud();
-
     }
+
 }

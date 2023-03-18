@@ -68,7 +68,8 @@
                     android:layout_centerVertical="true"
                     android:layout_gravity="center"
                     android:rotation="-180"
-                    android:text="Value" />
+                    android:text="Value"
+                    tools:ignore="MissingClass" />
 
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/linechart"

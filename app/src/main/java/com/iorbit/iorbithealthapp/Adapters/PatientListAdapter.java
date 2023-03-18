@@ -1,121 +1,97 @@
 package com.iorbit.iorbithealthapp.Adapters;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.iorbit.iorbithealthapp.Helpers.SessionManager.SharedPreference;
+
+import com.iorbit.iorbithealthapp.Models.PatientModel;
 import com.iorbit.iorbithealthapp.R;
 
+import java.io.IOException;
+import java.util.List;
 
-import java.util.ArrayList;
+public class PatientListAdapter  extends RecyclerView.Adapter<PatientListAdapter.ViewHolder> {
 
-public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.MyViewHolder> {
+    private  final Context mContext;
+    private final List<PatientModel> patientModels;
+    private ClickListener clickListener;
 
-    private static ClickListener clickListener;
-    private ArrayList<String> dataSet;
-    private ArrayList<String> name;
-    private Context mContext;
-
-
-    public PatientListAdapter(Context context, ArrayList<String> data, ArrayList<String> name) {
-        this.dataSet = data;
-        this.name = name;
-        this.mContext = context;
-    }
-
-
-
-    public void setOnItemClickListener(ClickListener clickListener) {
+    public PatientListAdapter(Context context, List<PatientModel> patientModels, ClickListener clickListener) {
+        this.mContext=context;
+        this.patientModels = patientModels;
         this.clickListener = clickListener;
+
     }
 
-    @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.patinet_list_row, parent, false);
-        MyViewHolder myViewHolder = new MyViewHolder(view);
-
-        return myViewHolder;
+    @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.patinet_list_row, parent, false);
+        return new ViewHolder(v);
     }
 
-    @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
-        String sr= new SharedPreference(mContext).getCurrentPAtient().getSsid();
-        if (!name.get(listPosition).equalsIgnoreCase("")) {
-            holder.textViewPid.setText(name.get(listPosition));
-            holder.textviewSsid.setText(dataSet.get(listPosition));
-            if (listPosition==0) {
-                holder.delete_button.setEnabled(false);
-                holder.delete_button.setImageResource(R.drawable.delete_btn);
-                holder.textViewPid.setText(name.get(listPosition));
-                holder.textviewSsid.setText(dataSet.get(listPosition));
-            }
-            if(sr.equalsIgnoreCase(dataSet.get(listPosition))){
-                holder.delete_button.setEnabled(false);
-                holder.delete_button.setImageResource(R.drawable.delete_btn);
-                holder.textViewPid.setText(name.get(listPosition));
-                holder.textviewSsid.setText(dataSet.get(listPosition));
-            }
-
+    @Override public void onBindViewHolder(ViewHolder holder, int position) {
+        try {
+            holder.bind(patientModels.get(position));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-
     }
 
-    @Override
-    public int getItemCount() {
-        return dataSet.size();
+    @Override public int getItemCount() {
+        return patientModels.size();
     }
 
-    public interface ClickListener {
-        void onItemClick(int position, View v);
+    class ViewHolder extends RecyclerView.ViewHolder {
 
-        void onEditItemClick(int position, View v);
-        void onDeleteItemClick(int position, View v);
+        ImageButton btn_Edit,btn_Delete;
+        TextView PatientName,ProductSSid;
+        LinearLayout Member_layout;
 
-    }
-
-
-
-    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-        TextView textViewPid, textviewSsid;
-        ImageButton edit_button;
-        ImageButton delete_button;
-        LinearLayout user_select;
-
-
-        public MyViewHolder(View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this);
-            this.user_select = itemView.findViewById(R.id.member_layout);
-            this.textViewPid = itemView.findViewById(R.id.pid);
-            this.textviewSsid = itemView.findViewById(R.id.ssid);
-            this.edit_button = itemView.findViewById(R.id.edit_patient);
-            this.delete_button =itemView.findViewById(R.id.delete_patient);
-            this.edit_button.setOnClickListener(this);
-            this.delete_button.setOnClickListener(this);
 
+            btn_Edit = itemView.findViewById(R.id.edit_patient);
+            btn_Delete = itemView.findViewById(R.id.delete_patient);
+            PatientName = itemView.findViewById(R.id.pid);
+            ProductSSid = itemView.findViewById(R.id.ssid);
+            Member_layout = itemView.findViewById(R.id.member_layout);
         }
 
+        public void bind(final PatientModel patient) throws IOException {
+            PatientName.setText(patient.getFirstName());
+            ProductSSid.setText(patient.getSsid());
+            Member_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    clickListener.onItemclick(patient);
+                }
+            });
+            btn_Edit.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    clickListener.onEditclick(patient);
+                }
+            });
+            btn_Delete.setOnClickListener(new View.OnClickListener() {
 
-        @Override
-        public void onClick(View view) {
-            if (view.getId() == R.id.edit_patient)
-                clickListener.onEditItemClick(getAdapterPosition(), view);
-            else if (view.getId() == R.id.delete_patient) {
-
-                clickListener.onDeleteItemClick(getAdapterPosition(), view);
-
-            }
-            else
-                clickListener.onItemClick(getAdapterPosition(), view);
-
+                @Override
+                public void onClick(View view) {
+                    clickListener.onDeleteclick(patient);
+                }
+            });
         }
     }
+
+    public interface ClickListener{
+        void onItemclick(PatientModel patientModel);
+        void onDeleteclick(PatientModel patientModel);
+        void onEditclick(PatientModel patientModel);
+    }
+
 }

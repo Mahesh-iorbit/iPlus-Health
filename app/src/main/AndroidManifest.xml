@@ -2,22 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission
-        android:name="android.permission.BLUETOOTH"
-        android:maxSdkVersion="30" />
-    <uses-permission
-        android:name="android.permission.BLUETOOTH_ADMIN"
-        android:maxSdkVersion="30" />
-    <uses-permission
-        android:name="android.permission.BLUETOOTH_SCAN"
-        android:usesPermissionFlags="neverForLocation" />
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
-
-
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
@@ -62,6 +54,7 @@
         <activity
             android:name=".ui.Activity.Charting.BodyTempActivity"
             android:screenOrientation="portrait"
+            android:label="Body Temperature Chart"
             android:theme="@style/otherScreensStyle"
             android:exported="false">
             <meta-data
@@ -101,6 +94,7 @@
         <activity
             android:name=".ui.Activity.Charting.BPActivity"
             android:exported="false"
+            android:theme="@style/otherScreensStyle"
             android:label="BP Chart">
             <meta-data
                 android:name="android.app.lib_name"
@@ -109,6 +103,7 @@
         <activity
             android:name=".ui.Activity.Charting.ECGListActivity"
             android:exported="false"
+            android:theme="@style/otherScreensStyle"
             android:label="ECG List">
             <meta-data
                 android:name="android.app.lib_name"

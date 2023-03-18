@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
@@ -21,12 +22,12 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 
 import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.iorbit.iorbithealthapp.Helpers.Interface.OnRetryClickListener;
 import com.iorbit.iorbithealthapp.R;
-import com.iorbit.iorbithealthapp.ui.Activity.LoginActivity;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -47,6 +48,19 @@ public class Utils {
     private static long DOUBLE_PRESS_TIME_THRESHOLD = 2000;
     private static long lastBackPressTime = 0;
     static Dialog dialog;
+
+    public static void requestPerm(final Activity context){
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED||
+                ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(context,
+                    new String[] { Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.CAMERA },
+                    1);
+        }
+    }
 
     public static void showDoubleBackPressExitSnackbar(Activity activity) {
         long currentTime = System.currentTimeMillis();
@@ -72,6 +86,7 @@ public class Utils {
     public static void showSnackbar(View view, String message, int duration) {
         Snackbar.make(view, message, duration).show();
     }
+
     public static boolean isConnected(Context context){
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = cm.getActiveNetworkInfo();
@@ -83,7 +98,6 @@ public class Utils {
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         return df.format(c);
     }
-
 
     public static void showNoInternetDialog(Context context, OnRetryClickListener listener){
         Dialog dialog = new Dialog(context);
@@ -131,6 +145,8 @@ public class Utils {
     }
 
 
+
+
     public static AlertDialog waitDialog;
     public static void showWaitDialog(Context context,String message) {
         closeWaitDialog();
@@ -148,37 +164,7 @@ public class Utils {
         }
     }
 
-    public static void requestPerm(final Activity context){
-        Dexter.withActivity(context)
-                .withPermissions(
-                        Manifest.permission.INTERNET,
-                        Manifest.permission.BLUETOOTH,
-                        Manifest.permission.BLUETOOTH_ADMIN,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.CAMERA)
-                .withListener(new MultiplePermissionsListener() {
-                    @Override
-                    public void onPermissionsChecked(MultiplePermissionsReport report) {
-                        // check if all permissions are granted
-                        if (!report.areAllPermissionsGranted()) {
-                            showSettingsDialog(context);
-                        }else if (report.isAnyPermissionPermanentlyDenied()) {
-                            showSettingsDialog(context);
-                        }
 
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-                        token.continuePermissionRequest();
-                    }
-                })
-                .onSameThread()
-                .check();
-    }
     private static void showSettingsDialog(final Context context) {
         androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(context);
         builder.setTitle("Need Permissions");
@@ -194,12 +180,14 @@ public class Utils {
         builder.show();
 
     }
+
     private static void openSettings(final Context context) {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         Uri uri = Uri.fromParts("package", context.getPackageName(), null);
         intent.setData(uri);
 
     }
+
     public static void showAlertDialogMessage(final Activity context,String msg,final boolean finish){
         final androidx.appcompat.app.AlertDialog.Builder builder =new androidx.appcompat.app.AlertDialog.Builder(new ContextThemeWrapper(context, com.google.android.material.R.style.Widget_AppCompat_ButtonBar_AlertDialog));
         builder.setMessage(msg);

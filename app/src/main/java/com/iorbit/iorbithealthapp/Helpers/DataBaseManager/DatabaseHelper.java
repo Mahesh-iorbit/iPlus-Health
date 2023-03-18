@@ -318,4 +318,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return res >= 0;
     }
 
+    public void deletePatient(String ssid) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String deleteQuery = "DELETE FROM " + TABLE_PATIENT + " WHERE (SSID LIKE '%" + EncryptModel.getEncryptedString(context, "KEY", ssid) + "%')";
+        db.execSQL(deleteQuery);
+        db.close();
+    }
+
 }

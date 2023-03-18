@@ -106,6 +106,13 @@ public interface ServiceApi {
                                                    Integer duration);
 
     @Headers({"Authorization: Bearer "+ TOKEN})
+    @GET("patientSSid/{ssid}/parameter/temperature/datestatus/{duration}/getmeasurement")
+    Call<DisplayMeasurements>getTempMeasure(@Path(value="ssid")
+                                                    String ssid,
+                                            @Path(value="duration")
+                                                    Integer duration);
+
+    @Headers({"Authorization: Bearer "+ TOKEN})
     @GET("patientSSid/{ssid}/parameter/BG/datestatus/{duration}/getmeasurement")
     Call<DisplayMeasurements>getbgMeasure(@Path(value="ssid")
                                                     String ssid,

@@ -35,11 +35,12 @@
     </LinearLayout>
 
 
-    <ProgressBar
+    <pl.droidsonroids.gif.GifImageView
         android:id="@+id/loading2"
         android:padding="2dp"
         android:layout_width="match_parent"
         android:layout_height="30dp"
+        android:src="@drawable/gifloading"
         android:visibility="invisible"/>
 
     <androidx.recyclerview.widget.RecyclerView
