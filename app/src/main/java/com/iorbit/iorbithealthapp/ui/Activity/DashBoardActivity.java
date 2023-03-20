@@ -121,12 +121,10 @@ public class DashBoardActivity extends AppCompatActivity implements OnRetryClick
                 if (!bluetoothAdapter.isEnabled()) {
                     Intent enableBluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                     startActivityForResult(enableBluetoothIntent, 1);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                             requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                             return;
                         }
-                    }
                 } else {
                     showBtConnectPopUp();
                 }
