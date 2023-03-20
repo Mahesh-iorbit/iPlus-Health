@@ -42,9 +42,9 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.iorbit.iorbithealthapp.Adapters.BluetoothDevicesAdapter;
 import com.iorbit.iorbithealthapp.Adapters.ScanDeviceListAdapter;
-import com.iorbit.iorbithealthapp.Devices.Buletooth.BPDrTrust1;
+import com.iorbit.iorbithealthapp.Devices.Bluetooth.BPDrTrust1;
 import com.iorbit.iorbithealthapp.Devices.CommonDataArea;
-import com.iorbit.iorbithealthapp.Devices.Buletooth.SPO2ControlD;
+import com.iorbit.iorbithealthapp.Devices.Bluetooth.SPO2ControlD;
 import com.iorbit.iorbithealthapp.Devices.OCR.TextScanner.GlucoMeterScanner;
 import com.iorbit.iorbithealthapp.Devices.OCR.TextScanner.SpO2Scanner;
 import com.iorbit.iorbithealthapp.Helpers.DataBaseManager.DatabaseHelper;
@@ -313,11 +313,11 @@ public class DashBoardActivity extends AppCompatActivity implements OnRetryClick
                 } else if ((devicee.getName() != null) && devicee.getName().contains(CommonDataArea.SUPPORTED_DEVICES_SPO21)) {
                     CommonDataArea.spO2ControlD = new SPO2ControlD(DashBoardActivity.this);
                     CommonDataArea.spO2ControlD.connectDevice(devicee.getAddress());
-                    try {
-                        dialog.dismiss();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                }
+                try {
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });

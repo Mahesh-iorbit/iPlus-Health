@@ -1,4 +1,4 @@
-package com.iorbit.iorbithealthapp.Devices.Buletooth;
+package com.iorbit.iorbithealthapp.Devices.Bluetooth;
 
 import static android.content.ContentValues.TAG;
 

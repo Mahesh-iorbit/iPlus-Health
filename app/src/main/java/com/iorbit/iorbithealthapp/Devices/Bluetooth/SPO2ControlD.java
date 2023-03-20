@@ -1,4 +1,4 @@
-package com.iorbit.iorbithealthapp.Devices.Buletooth;
+package com.iorbit.iorbithealthapp.Devices.Bluetooth;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;

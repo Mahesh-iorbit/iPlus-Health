@@ -1,8 +1,8 @@
 package com.iorbit.iorbithealthapp.Devices;
 
 
-import com.iorbit.iorbithealthapp.Devices.Buletooth.BPDrTrust1;
-import com.iorbit.iorbithealthapp.Devices.Buletooth.SPO2ControlD;
+import com.iorbit.iorbithealthapp.Devices.Bluetooth.BPDrTrust1;
+import com.iorbit.iorbithealthapp.Devices.Bluetooth.SPO2ControlD;
 
 public class CommonDataArea {
     public static String SUPPORTED_DEVICES_SPO21="Mike";
