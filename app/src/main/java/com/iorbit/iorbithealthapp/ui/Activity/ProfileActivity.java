@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.iorbit.iorbithealthapp.Helpers.DataBaseManager.DatabaseHelper;
 import com.iorbit.iorbithealthapp.Helpers.SessionManager.SharedPreference;
 import com.iorbit.iorbithealthapp.Helpers.Utils.Utils;
@@ -55,6 +56,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(view);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        Bundle extras = getIntent().getExtras();
         if (new SharedPreference(ProfileActivity.this).getCurrentPAtient() != null) {
             patients = new SharedPreference(ProfileActivity.this).getCurrentPAtient();
             setPatientDetails(patients);
@@ -120,7 +122,13 @@ public class ProfileActivity extends AppCompatActivity {
         a.put("AB -ve", 7);
         a.put("", -1);
 
-        setPatientDetails(patients);
+        if (extras != null) {
+            if(extras.containsKey("PatientEditDetailsDetails"))
+            {
+                patients = new Gson().fromJson(extras.getString("PatientEditDetailsDetails"), PatientModel.class);
+                setPatientDetails(patients);
+            }
+        }
 
     }
 

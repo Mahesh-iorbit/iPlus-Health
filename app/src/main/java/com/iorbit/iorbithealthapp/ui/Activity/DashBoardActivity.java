@@ -121,10 +121,22 @@ public class DashBoardActivity extends AppCompatActivity implements OnRetryClick
                 if (!bluetoothAdapter.isEnabled()) {
                     Intent enableBluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                     startActivityForResult(enableBluetoothIntent, 1);
-                        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-                            return;
+
+                        String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
+
+                        // Check if background location permission is needed
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                            // Check if the app already has background location permission
+                            if (ContextCompat.checkSelfPermission(DashBoardActivity.this, Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                                    != PackageManager.PERMISSION_GRANTED) {
+                                // Background location permission not granted, request it
+                                permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION};
+                            }
                         }
+
+                        // Request location permissions
+                        ActivityCompat.requestPermissions(DashBoardActivity.this, permissions, 2);
+
                 } else {
                     showBtConnectPopUp();
                 }

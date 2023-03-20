@@ -83,7 +83,7 @@ public class PatientSearchActivity extends AppCompatActivity {
             @Override
             public void onEditclick(PatientModel patientModel) {
                 Intent intent = new Intent(PatientSearchActivity.this, ProfileActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("PatientEditDetailsDetails", String.valueOf(databaseHelper.getPatientsByID(patientModel.getSsid())));
+                intent.putExtra("PatientEditDetailsDetails",databaseHelper.getPatientsByID(patientModel.getSsid()).toString());
                 startActivityForResult(intent, 15);
 
             }

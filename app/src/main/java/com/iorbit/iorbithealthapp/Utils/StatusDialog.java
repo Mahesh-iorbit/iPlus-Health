@@ -6,6 +6,12 @@ package com.iorbit.iorbithealthapp.Utils;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.widget.Button;
+
+import androidx.core.content.ContextCompat;
+
+import com.iorbit.iorbithealthapp.R;
 
 public class StatusDialog {
     static AlertDialog userDialog = null;
@@ -23,6 +29,17 @@ public class StatusDialog {
 
         userDialog = builder.create();
         userDialog.setCanceledOnTouchOutside(false);
+        // Set button text color and background color
+        userDialog.setOnShowListener(dialog -> {
+            Button positiveButton = userDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            positiveButton.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+            positiveButton.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+
+            Button negativeButton = userDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+            negativeButton.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));
+            negativeButton.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+        });
+
         userDialog.show();
     }
     /*public static void setPositiveButtonHandler(String label, DialogInterface.OnClickListener handler) {
