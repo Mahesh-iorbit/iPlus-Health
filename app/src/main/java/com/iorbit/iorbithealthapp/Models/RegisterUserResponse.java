@@ -2,7 +2,6 @@ package com.iorbit.iorbithealthapp.Models;
 
 public class RegisterUserResponse {
     private Data data;
-
     private Statusdet statusdet;
 
     public Data getData ()
@@ -25,11 +24,6 @@ public class RegisterUserResponse {
         this.statusdet = statusdet;
     }
 
-    @Override
-    public String toString()
-    {
-        return "ClassPojo [data = "+data+", statusdet = "+statusdet+"]";
-    }
     public class Statusdet
     {
         private String code;

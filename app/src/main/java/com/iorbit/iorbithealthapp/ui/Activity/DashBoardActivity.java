@@ -76,6 +76,7 @@ public class DashBoardActivity extends AppCompatActivity implements OnRetryClick
     ImageView BleIcon,ScanIcon;
     private BluetoothAdapter bluetoothAdapter;
     BottomNavigationView navView;
+    Toolbar toolbar;
 
     @SuppressLint("MissingInflatedId")
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -89,7 +90,7 @@ public class DashBoardActivity extends AppCompatActivity implements OnRetryClick
         navView = findViewById(R.id.bottom_navigation);
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
         navView.getMenu().getItem(0).setCheckable(false);
-        Toolbar toolbar = findViewById(R.id.toolbar_admin_vitals);
+        toolbar = findViewById(R.id.toolbar_admin_vitals);
         if (new SharedPreference(DashBoardActivity.this).getCurrentPAtient() != null)
             toolbar.setTitle(new SharedPreference(DashBoardActivity.this).getCurrentPAtient().getFirstName());
         else
@@ -183,6 +184,15 @@ public class DashBoardActivity extends AppCompatActivity implements OnRetryClick
                 return true;
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (new SharedPreference(DashBoardActivity.this).getCurrentPAtient() != null)
+            toolbar.setTitle(new SharedPreference(DashBoardActivity.this).getCurrentPAtient().getFirstName());
+        else
+            toolbar.setTitle(new SharedPreference(DashBoardActivity.this).getUserName());
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener

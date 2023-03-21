@@ -16,6 +16,9 @@ import com.iorbit.iorbithealthapp.Helpers.DataBaseManager.DatabaseHelper;
 import com.iorbit.iorbithealthapp.Helpers.SessionManager.SharedPreference;
 import com.iorbit.iorbithealthapp.Helpers.Utils.Utils;
 import com.iorbit.iorbithealthapp.Models.PatientModel;
+import com.iorbit.iorbithealthapp.Models.PatientResponseModel;
+import com.iorbit.iorbithealthapp.Models.RegisterUserModel;
+import com.iorbit.iorbithealthapp.Models.RegisterUserResponse;
 import com.iorbit.iorbithealthapp.Models.StatusResponse;
 import com.iorbit.iorbithealthapp.Network.RetrofitClient;
 import com.iorbit.iorbithealthapp.Network.ServiceApi;
@@ -225,14 +228,13 @@ public class AddPatientActivity extends AppCompatActivity {
         if (retrofitClient == null) {
             return;
         }
-        Call<StatusResponse> call = retrofitClient.create(ServiceApi.class).addPatient(userID,pat);
-        call.enqueue(new Callback<StatusResponse>() {
+        Call<PatientResponseModel> call = retrofitClient.create(ServiceApi.class).addPatient(userID,pat);
+        call.enqueue(new Callback<PatientResponseModel>() {
             @Override
-            public void onResponse(Call<StatusResponse> call, Response<StatusResponse> response) {
+            public void onResponse(Call<PatientResponseModel> call, Response<PatientResponseModel> response) {
                 if (response.isSuccessful()) {
-                    StatusResponse statusResponse = new StatusResponse();
-                    statusResponse = response.body();
-                    if (statusResponse.getCode().equalsIgnoreCase("200 OK")) {
+                    PatientResponseModel statusResponse = response.body();
+                    if (statusResponse.getStatus().getCode().equalsIgnoreCase("200 OK")) {
                         savePatientToMobileDB(pat);
                         if(new SharedPreference(AddPatientActivity.this).getCurrentPAtient()==null)
                             new SharedPreference(AddPatientActivity.this).saveCurrentPAtient(pat);
@@ -249,7 +251,7 @@ public class AddPatientActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<StatusResponse> call, Throwable t) {
+            public void onFailure(Call<PatientResponseModel> call, Throwable t) {
                 Toast.makeText(AddPatientActivity.this, "Something went wrong !!", Toast.LENGTH_SHORT).show();
             }
         });

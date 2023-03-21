@@ -9,6 +9,7 @@ import com.iorbit.iorbithealthapp.Models.GetPatientModel;
 import com.iorbit.iorbithealthapp.Models.LoginUserModel;
 import com.iorbit.iorbithealthapp.Models.MeasurementResponse;
 import com.iorbit.iorbithealthapp.Models.PatientModel;
+import com.iorbit.iorbithealthapp.Models.PatientResponseModel;
 import com.iorbit.iorbithealthapp.Models.RegisterUserModel;
 import com.iorbit.iorbithealthapp.Models.RegisterUserResponse;
 import com.iorbit.iorbithealthapp.Models.SaveMeasureModel;
@@ -23,6 +24,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 
@@ -50,9 +52,17 @@ public interface ServiceApi {
 
     @Headers({"Authorization: Bearer "+ TOKEN})
     @POST("physician/{userID}/savepatient")
-    Call<StatusResponse>addPatient(@Path(value = "userID")
+    Call<PatientResponseModel>addPatient(@Path(value = "userID")
                                    String userID,
-                                   @Body PatientModel patientModel);
+                                         @Body PatientModel patientModel);
+
+    @Headers({"Authorization: Bearer "+ TOKEN})
+    @PUT("physicianId/{userID}/patientSSID/{Ssid}/updatepatient")
+    Call<RegisterUserResponse>updatePatient(@Path(value = "userID")
+                                                 String userID,
+                                             @Path("Ssid")
+                                                    String Ssid,
+                                         @Body PatientModel patientModel);
 
     @Headers({"Authorization: Bearer "+ TOKEN})
     @POST("patientId/{patientId}/savemeasurement")

@@ -19,8 +19,10 @@ import com.iorbit.iorbithealthapp.Helpers.DataBaseManager.DatabaseHelper;
 import com.iorbit.iorbithealthapp.Helpers.SessionManager.SharedPreference;
 import com.iorbit.iorbithealthapp.Helpers.Utils.Utils;
 import com.iorbit.iorbithealthapp.Models.PatientModel;
+import com.iorbit.iorbithealthapp.Models.RegisterUserResponse;
 import com.iorbit.iorbithealthapp.Network.Connectivity;
 import com.iorbit.iorbithealthapp.Network.RetrofitClient;
+import com.iorbit.iorbithealthapp.Network.ServiceApi;
 import com.iorbit.iorbithealthapp.R;
 import com.iorbit.iorbithealthapp.databinding.ActivityProfileBinding;
 
@@ -38,6 +40,11 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -246,13 +253,15 @@ public class ProfileActivity extends AppCompatActivity {
         if (Connectivity.isConnected(getApplicationContext())) {
             Utils.closeWaitDialog();
             String userID = new SharedPreference(ProfileActivity.this).getUserID();
-            String url = RetrofitClient.BASE_URL+ "physicianId/" + userID + "/patientSSID/"+p.getSsid()+"/updatepatient";
-            new UpdatePatient(p).execute(url);
+//            String url = RetrofitClient.BASE_URL+ "physicianId/" + userID + "/patientSSID/"+p.getSsid()+"/updatepatient";
+//           new UpdatePatient(p).execute(url);
+            updatePatient(p);
         } else {
             Utils.closeWaitDialog();
             savePatientToMobileDB(p);
         }
     }
+
 
     private void savePatientToMobileDB(PatientModel pat) {
 
@@ -285,127 +294,29 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
-    public class UpdatePatient extends AsyncTask<String, Void, Void> {    // This is the JSON body of the post
-        JSONObject postData;// This is a constructor that allows you to pass in the JSON body
-        PatientModel patientDetails;
 
-        public UpdatePatient(PatientModel details) {
-            patientDetails = details;
+    private void updatePatient(PatientModel p) {
+        String userID = new SharedPreference(ProfileActivity.this).getUserID();
+        RetrofitClient retrofit = new RetrofitClient();
+        Retrofit retrofitClient = retrofit.getRetrofitInstance(this);
+        if (retrofitClient == null) {
+            return;
         }
+        Call<RegisterUserResponse> call = retrofitClient.create(ServiceApi.class).updatePatient(userID,p.getSsid(),p);
+        call.enqueue(new Callback<RegisterUserResponse>() {
+            @Override
+            public void onResponse(Call<RegisterUserResponse> call, Response<RegisterUserResponse> response) {
 
-        // This is a function that we are overriding from AsyncTask. It takes Strings as parameters because that is what we defined for the parameters of our async task
-        @Override
-        protected Void doInBackground(String... params) {
-
-            try {
-                // This is getting the url from the string we passed in
-                URL url = new URL(params[0]);
-
-                // Create the urlConnection
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-
-
-                urlConnection.setDoInput(true);
-                urlConnection.setDoOutput(true);
-
-                urlConnection.setRequestProperty("Content-Type", "application/json");
-
-                urlConnection.setRequestMethod("PUT");
-
-
-                // OPTIONAL - Sets an authorization header
-                urlConnection.setRequestProperty("Authorization", "Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJzb2Z0dGVrSldUIiwic3ViIjoibm92aW5AbWFpbC5jb20iLCJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNjIzMTcwNDQ1fQ.l8lUtNoFovT9DlQSBxyZK0He1Z8Ya78TkKjYVyisRW1vWTR0pV8XIhKoUura-inba8RWHOgZugmipoB8OdSLUg");
-                DataOutputStream os = new DataOutputStream(urlConnection.getOutputStream());
-                //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
-                os.writeBytes(patientDetails.toString());
-
-                os.flush();
-                os.close();
-                final int statusCode = urlConnection.getResponseCode();
-
-                if (statusCode == 200) {
-
-                    InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
-
-                    String response = convertInputStreamToString(inputStream);
-                    Log.d("Response", response);
-                    JSONObject obj = new JSONObject(response);
-
-                    String jsonResponse = response.toString().trim();
-                    Log.d("IOrbitLogDetailsSignUp", "response " + jsonResponse);
-
-                    try {
-                        final JSONObject status = obj.getJSONObject("status");
-
-                        runOnUiThread(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                // if(new SharedPreference(EditPatient.this).getCurrentPAtient()==null)
-                                new SharedPreference(ProfileActivity.this).saveCurrentPAtient(patientDetails);
-                                Utils.closeWaitDialog();
-                                showSuccess();
-
-                                try {
-                                    databaseHelper.updatePatients(patientDetails,true);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-
-
-                            }
-                        });
-
-
-                    } catch (Exception e) {
-                        // Log.d(TAG, e.getLocalizedMessage());
-                    }
-                    return null;
-                } else if (statusCode == 409) {
-                    runOnUiThread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            Toast.makeText(ProfileActivity.this, "Device Already Assigned To The Member", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-                } else {
-                    runOnUiThread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            Log.d("fbsnvb", "" + statusCode);
-                            Toast.makeText(ProfileActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-
-                        }
-                    });
-
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
-            return null;
-        }
 
+            @Override
+            public void onFailure(Call<RegisterUserResponse> call, Throwable t) {
 
-    }
-    private String convertInputStreamToString(InputStream inputStream) {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        StringBuilder sb = new StringBuilder();
-        String line;
-        try {
-            while ((line = bufferedReader.readLine()) != null) {
-                sb.append(line);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return sb.toString();
+        });
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

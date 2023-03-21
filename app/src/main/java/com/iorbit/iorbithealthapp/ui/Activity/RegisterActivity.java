@@ -369,8 +369,7 @@ public class RegisterActivity extends AppCompatActivity implements OnRetryClickL
             public void onResponse(Call<RegisterUserResponse> call, Response<RegisterUserResponse> response) {
                 try {
                     if (response.isSuccessful()) {
-                        RegisterUserResponse userResponse = new RegisterUserResponse();
-                        userResponse = response.body();
+                        RegisterUserResponse userResponse = response.body();
                         if (userResponse.getStatusdet().getCode().equalsIgnoreCase("200 OK")) {
                             Utils.closeLoaderDialog();
                             showDialogMessage("Success!", "Registration Completed", true);
@@ -415,9 +414,7 @@ public class RegisterActivity extends AppCompatActivity implements OnRetryClickL
             public void onClick(DialogInterface dialog, int which) {
                 try {
                     userDialog.dismiss();
-                    if (exit) {
-                        exit(usernameInput);
-                    }
+                    startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
                 } catch (Exception e) {
                     if (exit) {
                         exit(usernameInput);
