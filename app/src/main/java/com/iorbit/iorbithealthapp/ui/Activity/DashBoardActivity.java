@@ -81,7 +81,9 @@ public class DashBoardActivity extends AppCompatActivity implements OnRetryClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash_board);
 
-        Utils.requestPerm(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            Utils.requestPermissions(this);
+        }
         getPatientFromCloud();
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         Toolbar toolbar = findViewById(R.id.toolbar_admin_vitals);
