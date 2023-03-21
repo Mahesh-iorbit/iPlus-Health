@@ -84,9 +84,12 @@ public class DashboardFragment extends Fragment implements View.OnClickListener{
             switch (item.getItemId()) {
                 case R.id.navigation_search_patient:
                     startActivity(new Intent(getActivity(), PatientSearchActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    getActivity().finish();
                     return true;
                 case R.id.navigation_addpatient:
                     startActivity(new Intent(getActivity(), AddPatientActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    getActivity().finish();
+
                     return true;
 
             }
