@@ -47,7 +47,7 @@ public class Utils {
     private static long lastBackPressTime = 0;
     static Dialog dialog;
 
-    @RequiresApi(api = Build.VERSION_CODES.S)
+
     public static void requestPermissions(Context context) {
         List<String> permissionToRequest = new ArrayList<>();
         if (!hasReadExternalStoragePermission(context))
@@ -55,7 +55,9 @@ public class Utils {
         if (!hasWriteExternalStoragePermission(context))
             permissionToRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (!hasManageExternalStoragePermission(context))
-            permissionToRequest.add(Manifest.permission.MANAGE_EXTERNAL_STORAGE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                permissionToRequest.add(Manifest.permission.MANAGE_EXTERNAL_STORAGE);
+            }
         if (!hasBluetoothPermission(context))
             permissionToRequest.add(Manifest.permission.BLUETOOTH);
         if (!hasBluetoothAdminPermission(context))
@@ -63,9 +65,13 @@ public class Utils {
         if (!hasAccessFineLocationPermission(context))
             permissionToRequest.add(Manifest.permission.ACCESS_FINE_LOCATION);
         if (!hasBluetoothScanPermission(context))
-            permissionToRequest.add(Manifest.permission.BLUETOOTH_SCAN);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                permissionToRequest.add(Manifest.permission.BLUETOOTH_SCAN);
+            }
         if (!hasBluetoothConnectPermission(context))
-            permissionToRequest.add(Manifest.permission.BLUETOOTH_CONNECT);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                permissionToRequest.add(Manifest.permission.BLUETOOTH_CONNECT);
+            }
         if (!hasBluetoothPrivilegedPermission(context))
             permissionToRequest.add(Manifest.permission.BLUETOOTH_PRIVILEGED);
         if (!hasCameraPermission(context))
