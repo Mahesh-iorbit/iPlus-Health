@@ -82,10 +82,9 @@ public class PatientSearchActivity extends AppCompatActivity {
 
             @Override
             public void onEditclick(PatientModel patientModel) {
+                getCurrentPatient(databaseHelper.getPatientsByID(patientModel.getSsid()));
                 Intent intent = new Intent(PatientSearchActivity.this, ProfileActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("PatientEditDetailsDetails",databaseHelper.getPatientsByID(patientModel.getSsid()).toString());
-                startActivityForResult(intent, 15);
-
+                startActivity(intent);
             }
         });
         recyclerView.setAdapter(adapter);
