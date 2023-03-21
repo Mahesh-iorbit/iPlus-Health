@@ -13,8 +13,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.CompoundButton;
-import com.google.android.material.snackbar.Snackbar;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
@@ -29,7 +29,6 @@ import com.iorbit.iorbithealthapp.Network.RetrofitClient;
 import com.iorbit.iorbithealthapp.Network.ServiceApi;
 import com.iorbit.iorbithealthapp.R;
 import com.iorbit.iorbithealthapp.databinding.ActivityLoginBinding;
-
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -158,8 +157,12 @@ public class LoginActivity extends AppCompatActivity implements OnRetryClickList
         LoginUserModel loginUser = new LoginUserModel();
         loginUser.setUserId(Mobilecode + "" + username);
         loginUser.setUserPassword(password);
-
         if(Utils.isConnected(this)){
+            if (lb.remember.isChecked()) {
+                sf.put("remember", lb.editTextUserPassword.getText().toString().trim());
+                sf.put("rememberPhone", lb.editTextUserId.getText().toString().trim());
+            } else
+                sf.clear();
             databaseHelper = new DatabaseHelper(getApplicationContext());
             RetrofitClient retrofit = new RetrofitClient();
             Retrofit retrofitClient = retrofit.getRetrofitInstance(this);
@@ -193,23 +196,22 @@ public class LoginActivity extends AppCompatActivity implements OnRetryClickList
                                 //showDialogMessage("Success!", userName + " has been confirmed!", true);
                             }
                         } else {
-                            Utils.showSnackbar(findViewById(android.R.id.content),"User not found!!",Snackbar.LENGTH_SHORT);
-                            Utils.closeLoaderDialog();
+                            com.iorbit.iorbithealthapp.Helpers.Utils.Utils.showSnackbar(findViewById(android.R.id.content),"User not found!!", Snackbar.LENGTH_SHORT);
+                            com.iorbit.iorbithealthapp.Helpers.Utils.Utils.closeLoaderDialog();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Utils.closeLoaderDialog();
+                        com.iorbit.iorbithealthapp.Helpers.Utils.Utils.closeLoaderDialog();
                     }
-                    Utils.closeLoaderDialog();
+                    com.iorbit.iorbithealthapp.Helpers.Utils.Utils.closeLoaderDialog();
                 }
 
                 @Override
                 public void onFailure(Call<LoginUserModel> call, Throwable t) {
-                    Utils.closeLoaderDialog();
+                    com.iorbit.iorbithealthapp.Helpers.Utils.Utils.closeLoaderDialog();
                     Utils.showSnackbar(findViewById(android.R.id.content),"Something went wrong!!",Snackbar.LENGTH_SHORT);
                 }
             });
-
         }else{
             Utils.closeLoaderDialog();
             Utils.showNoInternetDialog(this, (OnRetryClickListener) this);

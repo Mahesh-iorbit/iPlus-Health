@@ -34,8 +34,11 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.hbb20.CountryCodePicker;
+import com.iorbit.iorbithealthapp.Helpers.DataBaseManager.DatabaseHelper;
 import com.iorbit.iorbithealthapp.Helpers.Interface.OnRetryClickListener;
+import com.iorbit.iorbithealthapp.Helpers.SessionManager.SharedPreference;
 import com.iorbit.iorbithealthapp.Helpers.Utils.Utils;
+import com.iorbit.iorbithealthapp.Models.LoginUserModel;
 import com.iorbit.iorbithealthapp.Models.RegisterUserModel;
 import com.iorbit.iorbithealthapp.Models.RegisterUserResponse;
 import com.iorbit.iorbithealthapp.Models.StatusResponse;
@@ -69,6 +72,8 @@ public class RegisterActivity extends AppCompatActivity implements OnRetryClickL
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_HINT = 1000;
     private static int SPLASH_TIME_OUT = 1000;
+    DatabaseHelper databaseHelper;
+    public String globalUserID = "";
 
 
     @SuppressLint({"MissingInflatedId", "ResourceType"})
@@ -78,6 +83,7 @@ public class RegisterActivity extends AppCompatActivity implements OnRetryClickL
         setContentView(R.layout.activity_register);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        databaseHelper = new DatabaseHelper(this);
         constraintlayout = findViewById(R.id.main_layout);
         ccp = findViewById(R.id.MobileNumberCode);
         textInputMobilenumber = findViewById(R.id.textInputMobilenumber);
@@ -343,12 +349,12 @@ public class RegisterActivity extends AppCompatActivity implements OnRetryClickL
     }
 
     private void confirmSignUp() {
-
+        globalUserID = ccp.getSelectedCountryCodeWithPlus().toString().trim() + username.getText().toString().trim();
         RegisterUserModel registerUserModel = new RegisterUserModel();
         registerUserModel.setHospitalName(hospitalName.getText().toString().trim());
         registerUserModel.setUserEmail(email.getText().toString().trim());
         registerUserModel.setLastName(LastName.getText().toString().trim());
-        registerUserModel.setHospitalID(ccp.getSelectedCountryCodeWithPlus().toString().trim() + username.getText().toString().trim());
+        registerUserModel.setHospitalID(globalUserID);
         saveHospitalToCloud(registerUserModel);
     }
 
@@ -371,8 +377,8 @@ public class RegisterActivity extends AppCompatActivity implements OnRetryClickL
                     if (response.isSuccessful()) {
                         RegisterUserResponse userResponse = response.body();
                         if (userResponse.getStatusdet().getCode().equalsIgnoreCase("200 OK")) {
-                            Utils.closeLoaderDialog();
-                            showDialogMessage("Success!", "Registration Completed", true);
+                            LoginUser();
+                            //showDialogMessage("Success!", "Registration Completed", true);
                         } else {
                             if (userResponse.getStatusdet().getMessage().equalsIgnoreCase("Error")
                                     && userResponse.getStatusdet().getDetails().equalsIgnoreCase("User Already Exist")) {
@@ -406,6 +412,65 @@ public class RegisterActivity extends AppCompatActivity implements OnRetryClickL
         });
 
     }
+
+    private void LoginUser() {
+        final CountryCodePicker ccp = (CountryCodePicker) findViewById(R.id.MobileNumberCode);
+        Mobilecode = ccp.getSelectedCountryCodeWithPlus().toString().trim();
+        LoginUserModel loginUser = new LoginUserModel();
+        loginUser.setUserId(Mobilecode + "" + usernameInput);
+        loginUser.setUserPassword(userPasswd);
+        if(Utils.isConnected(this)){
+            databaseHelper = new DatabaseHelper(getApplicationContext());
+            RetrofitClient retrofit = new RetrofitClient();
+            Retrofit retrofitClient = retrofit.getRetrofitInstance(this);
+            if (retrofitClient == null) {
+                return;
+            }
+            Call<LoginUserModel> call = retrofitClient.create(ServiceApi.class).UserLogin(loginUser);
+            call.enqueue(new Callback<LoginUserModel>() {
+                @Override
+                public void onResponse(Call<LoginUserModel> call, Response<LoginUserModel> response) {
+                    try {
+                        if (response.isSuccessful()) {
+                            LoginUserModel loginUser1 = response.body();
+                            if (loginUser1.getStatusdet().getCode().equalsIgnoreCase("200 OK")) {
+                                if (!globalUserID.equalsIgnoreCase(loginUser1.getUserId())) {
+                                    databaseHelper.deletePatients();
+                                    new SharedPreference(getApplicationContext()).clearCurrentPatient();
+                                }
+                                new SharedPreference(RegisterActivity.this).saveUserID(loginUser1.getUuid());
+                                new SharedPreference(RegisterActivity.this).saveUserName(loginUser1.getUserName());
+                                Intent in = new Intent(getApplicationContext(), DashBoardActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(in);
+                                customType(RegisterActivity.this,"fadein-to-fadeout");
+                                finish();
+                                //showDialogMessage("Success!", userName + " has been confirmed!", true);
+                            }
+                        } else {
+                            com.iorbit.iorbithealthapp.Helpers.Utils.Utils.showSnackbar(findViewById(android.R.id.content),"User not found!!", Snackbar.LENGTH_SHORT);
+                            com.iorbit.iorbithealthapp.Helpers.Utils.Utils.closeLoaderDialog();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        com.iorbit.iorbithealthapp.Helpers.Utils.Utils.closeLoaderDialog();
+                    }
+                    com.iorbit.iorbithealthapp.Helpers.Utils.Utils.closeLoaderDialog();
+                }
+
+                @Override
+                public void onFailure(Call<LoginUserModel> call, Throwable t) {
+                    com.iorbit.iorbithealthapp.Helpers.Utils.Utils.closeLoaderDialog();
+                    Utils.showSnackbar(findViewById(android.R.id.content),"Something went wrong!!",Snackbar.LENGTH_SHORT);
+                }
+            });
+        }else{
+            Utils.closeLoaderDialog();
+            Utils.showNoInternetDialog(this, (OnRetryClickListener) this);
+        }
+
+
+    }
+
 
     private void showDialogMessage(String title, String body, final boolean exit) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
