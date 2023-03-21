@@ -24,6 +24,7 @@ import com.iorbit.iorbithealthapp.Devices.OCR.camera.analyze.Analyzer;
 import com.iorbit.iorbithealthapp.Devices.OCR.text.TextCameraScanActivity;
 import com.iorbit.iorbithealthapp.Devices.OCR.text.ViewfinderView;
 import com.iorbit.iorbithealthapp.Devices.OCR.text.analyze.TextRecognitionAnalyzer;
+import com.iorbit.iorbithealthapp.Helpers.SessionManager.SharedPreference;
 import com.iorbit.iorbithealthapp.Models.SaveMeasureModel;
 import com.iorbit.iorbithealthapp.Models.StatusResponseModel;
 import com.iorbit.iorbithealthapp.Network.RetrofitClient;
@@ -223,8 +224,8 @@ public class GlucoMeterScanner extends TextCameraScanActivity {
             measure.setDevmodelId("2ab90e73-99c5-11eb-853f-e9af88721123");
             measure.setDevId("852a2034-c8dd-11eb-a396-755a8569ff4d");
             measure.setIntVal(String.valueOf(intVal));
-            measure.setPatientId("1aa0001");
-            Call<StatusResponseModel> call = retrofitClient.create(ServiceApi.class).saveMeasure("1aa0001", measure);
+            measure.setPatientId(new SharedPreference(GlucoMeterScanner.this).getCurrentPAtient().getSsid());
+            Call<StatusResponseModel> call = retrofitClient.create(ServiceApi.class).saveMeasure(new SharedPreference(GlucoMeterScanner.this).getCurrentPAtient().getSsid(), measure);
             call.enqueue(new Callback<StatusResponseModel>() {
                 @Override
                 public void onResponse(Call<StatusResponseModel> call, Response<StatusResponseModel> response) {
