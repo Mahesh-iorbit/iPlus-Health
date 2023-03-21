@@ -70,7 +70,6 @@ public class PatientSearchActivity extends AppCompatActivity {
             @Override
             public void onItemclick(PatientModel patientModel) {
                 getCurrentPatient(databaseHelper.getPatientsByID(patientModel.getSsid()));
-                startActivity(new Intent(PatientSearchActivity.this,DashBoardActivity.class));
                 finish();
             }
 

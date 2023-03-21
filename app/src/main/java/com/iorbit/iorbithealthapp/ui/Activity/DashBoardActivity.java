@@ -38,6 +38,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.iorbit.iorbithealthapp.Adapters.BluetoothDevicesAdapter;
@@ -74,7 +75,9 @@ public class DashBoardActivity extends AppCompatActivity implements OnRetryClick
     DatabaseHelper databaseHelper;
     ImageView BleIcon,ScanIcon;
     private BluetoothAdapter bluetoothAdapter;
+    BottomNavigationView navView;
 
+    @SuppressLint("MissingInflatedId")
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +86,9 @@ public class DashBoardActivity extends AppCompatActivity implements OnRetryClick
         Utils.requestPermissions(this);
         getPatientFromCloud();
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        navView = findViewById(R.id.bottom_navigation);
+        navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
+        navView.getMenu().getItem(0).setCheckable(false);
         Toolbar toolbar = findViewById(R.id.toolbar_admin_vitals);
         if (new SharedPreference(DashBoardActivity.this).getCurrentPAtient() != null)
             toolbar.setTitle(new SharedPreference(DashBoardActivity.this).getCurrentPAtient().getFirstName());
@@ -121,26 +127,28 @@ public class DashBoardActivity extends AppCompatActivity implements OnRetryClick
                     Intent enableBluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                     startActivityForResult(enableBluetoothIntent, 1);
 
-                        String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
+                    String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
 
-                        // Check if background location permission is needed
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                            // Check if the app already has background location permission
-                            if (ContextCompat.checkSelfPermission(DashBoardActivity.this, Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-                                    != PackageManager.PERMISSION_GRANTED) {
-                                // Background location permission not granted, request it
-                                permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION};
-                            }
+                    // Check if background location permission is needed
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        // Check if the app already has background location permission
+                        if (ContextCompat.checkSelfPermission(DashBoardActivity.this, Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                                != PackageManager.PERMISSION_GRANTED) {
+                            // Background location permission not granted, request it
+                            permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION};
                         }
-
-                        // Request location permissions
-                        ActivityCompat.requestPermissions(DashBoardActivity.this, permissions, 2);
+                    }
+                    // Request location permissions
+                    ActivityCompat.requestPermissions(DashBoardActivity.this, permissions, 2);
 
                 } else {
                     showBtConnectPopUp();
                 }
             }
         });
+
+
+
 
         ScanIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,6 +184,23 @@ public class DashBoardActivity extends AppCompatActivity implements OnRetryClick
             }
         });
     }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener
+            =new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_search_patient:
+                    startActivity(new Intent(DashBoardActivity.this, PatientSearchActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    return true;
+                case R.id.navigation_addpatient:
+                    startActivity(new Intent(DashBoardActivity.this, AddPatientActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    return true;
+
+            }
+            return false;
+        }
+    };
 
     private AlertDialog showScanConnectPopUp() {
         List<ScannerDeviceModel> deviceModelList = new ArrayList<>();

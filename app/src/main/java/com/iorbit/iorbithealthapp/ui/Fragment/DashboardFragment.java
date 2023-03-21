@@ -30,7 +30,6 @@ import java.util.Date;
 
 public class DashboardFragment extends Fragment implements View.OnClickListener{
 
-    BottomNavigationView navView;
     TextView BgCount, BpCount, EcgCount, Spo2Count, TempCount;
     LinearLayout EcgLayout, BpLayout, BgLayout, oxygenLayout, tempLayout, bpmLayout,data_sysnc_layout;
     private LinearLayout healthReportLayout;
@@ -40,9 +39,6 @@ public class DashboardFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        navView = v.findViewById(R.id.bottom_navigation);
-        navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
-        navView.getMenu().getItem(0).setCheckable(false);
         BgCount = v.findViewById(R.id.BG_count);
         BpCount = v.findViewById(R.id.BP_count);
         EcgCount = v.findViewById(R.id.ECG_count);
@@ -76,23 +72,6 @@ public class DashboardFragment extends Fragment implements View.OnClickListener{
         cl.add(Calendar.DATE, 1);
         return v;
     }
-
-    private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener
-            =new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_search_patient:
-                    startActivity(new Intent(getActivity(), PatientSearchActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                    return true;
-                case R.id.navigation_addpatient:
-                    startActivity(new Intent(getActivity(), AddPatientActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                    return true;
-
-            }
-            return false;
-        }
-    };
 
 
     @Override
