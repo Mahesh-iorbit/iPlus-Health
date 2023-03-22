@@ -6,15 +6,11 @@ import androidx.appcompat.view.ContextThemeWrapper;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.Toast;
-
-import com.google.gson.Gson;
 import com.iorbit.iorbithealthapp.Helpers.DataBaseManager.DatabaseHelper;
 import com.iorbit.iorbithealthapp.Helpers.SessionManager.SharedPreference;
 import com.iorbit.iorbithealthapp.Helpers.Utils.Utils;
@@ -25,18 +21,6 @@ import com.iorbit.iorbithealthapp.Network.RetrofitClient;
 import com.iorbit.iorbithealthapp.Network.ServiceApi;
 import com.iorbit.iorbithealthapp.R;
 import com.iorbit.iorbithealthapp.databinding.ActivityProfileBinding;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -63,13 +47,19 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(view);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        Bundle extras = getIntent().getExtras();
-        if (new SharedPreference(ProfileActivity.this).getCurrentPAtient() != null) {
-            patients = new SharedPreference(ProfileActivity.this).getCurrentPAtient();
-            setPatientDetails(patients);
+        databaseHelper = new DatabaseHelper(this);
+        String extras = getIntent().getStringExtra("patienssid");
+        if (extras != null) {
+            patients = databaseHelper.getPatientsByID(extras);
+                setPatientDetails(patients);
+        }else{
+            if (new SharedPreference(ProfileActivity.this).getCurrentPAtient() != null) {
+                patients = new SharedPreference(ProfileActivity.this).getCurrentPAtient();
+                setPatientDetails(patients);
+            }
         }
 
-        databaseHelper = new DatabaseHelper(this);
+
 
         pb.etcalibration.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,13 +119,7 @@ public class ProfileActivity extends AppCompatActivity {
         a.put("AB +ve", 7);
         a.put("AB -ve", 8);
         a.put("", -1);
-        if (extras != null) {
-            if(extras.containsKey("PatientEditDetailsDetails"))
-            {
-                patients = new Gson().fromJson(extras.getString("PatientEditDetailsDetails"), PatientModel.class);
-                setPatientDetails(patients);
-            }
-        }
+
 
     }
 

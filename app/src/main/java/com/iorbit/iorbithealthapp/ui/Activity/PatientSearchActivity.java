@@ -78,11 +78,10 @@ public class PatientSearchActivity extends AppCompatActivity {
                 deletePatientFromDb(patientModel);
             }
 
-
             @Override
             public void onEditclick(PatientModel patientModel) {
-                getCurrentPatient(databaseHelper.getPatientsByID(patientModel.getSsid()));
                 Intent intent = new Intent(PatientSearchActivity.this, ProfileActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("patienssid",patientModel.getSsid());
                 startActivity(intent);
             }
         });
