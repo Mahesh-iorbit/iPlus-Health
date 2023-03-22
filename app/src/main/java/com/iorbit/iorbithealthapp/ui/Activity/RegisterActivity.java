@@ -434,10 +434,8 @@ public class RegisterActivity extends AppCompatActivity implements OnRetryClickL
                         if (response.isSuccessful()) {
                             LoginUserModel loginUser1 = response.body();
                             if (loginUser1.getStatusdet().getCode().equalsIgnoreCase("200 OK")) {
-                                if (!globalUserID.equalsIgnoreCase(loginUser1.getUserId())) {
                                     databaseHelper.deletePatients();
                                     new SharedPreference(getApplicationContext()).clearCurrentPatient();
-                                }
                                 new SharedPreference(RegisterActivity.this).saveUserID(loginUser1.getUuid());
                                 new SharedPreference(RegisterActivity.this).saveUserName(loginUser1.getUserName());
                                 Intent in = new Intent(getApplicationContext(), DashBoardActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -471,25 +469,6 @@ public class RegisterActivity extends AppCompatActivity implements OnRetryClickL
 
     }
 
-
-    private void showDialogMessage(String title, String body, final boolean exit) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title).setMessage(body).setNeutralButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                try {
-                    userDialog.dismiss();
-                    startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
-                } catch (Exception e) {
-                    if (exit) {
-                        exit(usernameInput);
-                    }
-                }
-            }
-        });
-        userDialog = builder.create();
-        userDialog.show();
-    }
 
     private void exit(String uname) {
         exit(uname, null);
