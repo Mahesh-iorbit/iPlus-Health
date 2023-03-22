@@ -8,6 +8,7 @@
     <string name="address">iOrbit Digital Technologies Pvt. Ltd.\n No. 58, 3rd Main, Santhrupthi Nagar \n J P Nagar, 7th Phase \n Bangalore 560078</string>
 
     <string-array name="bloodgroup">
+        <item>No Blood Group Selected</item>
         <item>O +ve</item>
         <item>O -ve</item>
         <item>A +ve</item>
