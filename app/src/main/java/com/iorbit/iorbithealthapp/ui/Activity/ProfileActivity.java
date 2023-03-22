@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -277,20 +280,52 @@ public class ProfileActivity extends AppCompatActivity {
         builder.show();
 
     }
+    public boolean isNetworkConnected() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    }
 
 
     private void updatePatient(PatientModel p) {
         String userID = new SharedPreference(ProfileActivity.this).getUserID();
+
         RetrofitClient retrofit = new RetrofitClient();
         Retrofit retrofitClient = retrofit.getRetrofitInstance(this);
         if (retrofitClient == null) {
             return;
         }
+        boolean isNetworkConnected = isNetworkConnected();
+
         Call<RegisterUserResponse> call = retrofitClient.create(ServiceApi.class).updatePatient(userID,p.getSsid(),p);
         call.enqueue(new Callback<RegisterUserResponse>() {
             @Override
             public void onResponse(Call<RegisterUserResponse> call, Response<RegisterUserResponse> response) {
 
+                boolean isUpdated = false;
+                try {
+                    isUpdated = databaseHelper.updatePatients(p, isNetworkConnected);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (isUpdated) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(ProfileActivity.this, com.hbb20.R.style.Widget_AppCompat_ButtonBar_AlertDialog));
+                    builder.setMessage("Member Data Updated");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            // Database has already been updated, no need to do anything here
+                            finish();
+                        }
+                    });
+                    builder.show();
+                }
+                else {
+                    // Show a "No Internet" message if network is not connected
+                    if (!isNetworkConnected) {
+                        Toast.makeText(ProfileActivity.this, "No Internet", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
 
             @Override
@@ -299,8 +334,6 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
