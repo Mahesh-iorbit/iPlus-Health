@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.view.ContextThemeWrapper;
@@ -183,6 +184,29 @@ public class Utils {
             }
         });
     }
+
+    public static void showLoaderAlert(Context context ,DialogInterface.OnClickListener listener,String title,String Message) {
+        if (context == null) {
+            // Handle null context here, e.g. log an error and return
+            return;
+        }
+        dialog = new Dialog(context);
+        dialog.setContentView(R.layout.custom_alert_dialog);
+        TextView message = dialog.findViewById(R.id.alert_message);
+        dialog.setTitle(title);
+        message.setText(Message);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.show();
+        Button button = dialog.findViewById(R.id.ok_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClick(dialog, DialogInterface.BUTTON_POSITIVE);
+            }
+        });
+    }
+
 
     public static void showLoaderDialog(Context context){
         dialog = new Dialog(context);

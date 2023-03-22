@@ -117,22 +117,22 @@
                 android:text="Remember password" />
 
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/textViewUserForgotPassword"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="5dp"
-                android:elevation="8dp"
-                android:onClick="forgotPassword"
-                android:text="Forgot password?"
+<!--            <androidx.appcompat.widget.AppCompatTextView-->
+<!--                android:id="@+id/textViewUserForgotPassword"-->
+<!--                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="end"-->
+<!--                android:layout_marginTop="15dp"-->
+<!--                android:layout_marginBottom="5dp"-->
+<!--                android:elevation="8dp"-->
+<!--                android:onClick="forgotPassword"-->
+<!--                android:text="Forgot password?"-->
 
-                android:textAlignment="textEnd"
-                tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteX="20dp"
-                tools:layout_editor_absoluteY="670dp" />
+<!--                android:textAlignment="textEnd"-->
+<!--                tools:ignore="MissingConstraints"-->
+<!--                tools:layout_editor_absoluteX="20dp"-->
+<!--                tools:layout_editor_absoluteY="670dp" />-->
             <!--            -->
 
 

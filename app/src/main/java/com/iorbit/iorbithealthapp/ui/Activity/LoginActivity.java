@@ -91,12 +91,12 @@ public class LoginActivity extends AppCompatActivity implements OnRetryClickList
         });
 
 
-        lb.textViewUserForgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),ForgotPasswordActivity.class));
-            }
-        });
+//        lb.textViewUserForgotPassword.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(getApplicationContext(),ForgotPasswordActivity.class));
+//            }
+//        });
     }
 
     public boolean isValidPhoneNumber() {

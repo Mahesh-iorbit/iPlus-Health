@@ -1,5 +1,8 @@
 package com.iorbit.iorbithealthapp.ui.Activity;
 
+import static com.iorbit.iorbithealthapp.Helpers.Utils.Utils.showLoaderAlert;
+import static com.iorbit.iorbithealthapp.Utils.App.context;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
 
@@ -304,8 +307,16 @@ public class ProfileActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         if (isUpdated) {
+//                            showLoaderAlert(ProfileActivity.this, new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    // Handle onClick event here
+//                                    startActivity(new Intent(ProfileActivity.this,PatientSearchActivity.class));
+//                                    finish();
+//                                }
+//                            }, "Success", "Ok");
                             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(ProfileActivity.this, com.hbb20.R.style.Widget_AppCompat_ButtonBar_AlertDialog));
-                            builder.setMessage("Member Data Updated");
+                            builder.setMessage("Member Updated Successfully");
                             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {

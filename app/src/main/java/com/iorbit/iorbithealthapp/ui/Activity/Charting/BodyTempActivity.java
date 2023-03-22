@@ -1,5 +1,7 @@
 package com.iorbit.iorbithealthapp.ui.Activity.Charting;
 
+import static com.iorbit.iorbithealthapp.Helpers.Utils.Utils.closeWaitDialog;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -39,7 +41,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.google.gson.Gson;
 import com.iorbit.iorbithealthapp.Adapters.CustomAdapter;
 import com.iorbit.iorbithealthapp.Helpers.SessionManager.SharedPreference;
-import com.iorbit.iorbithealthapp.Helpers.SessionManager.Utils;
+import com.iorbit.iorbithealthapp.Helpers.Utils.Utils;
 import com.iorbit.iorbithealthapp.Models.BodyTempAndSPO2Model;
 import com.iorbit.iorbithealthapp.Models.DisplayMeasurements;
 import com.iorbit.iorbithealthapp.Network.RetrofitClient;
@@ -394,10 +396,6 @@ public class BodyTempActivity extends AppCompatActivity  implements OnChartGestu
     }
 
 
-
-    private void closeWaitDialog() {
-        Utils.closeWaitDialog();
-    }
 
     private void showDialogMessage(String title, String body) {
 
