@@ -239,13 +239,9 @@ public class ProfileActivity extends AppCompatActivity {
         p.setStdDBP(pb.etdbp.getText().toString().trim());
         if (Connectivity.isConnected(getApplicationContext())) {
             Utils.closeWaitDialog();
-            String userID = new SharedPreference(ProfileActivity.this).getUserID();
-//            String url = RetrofitClient.BASE_URL+ "physicianId/" + userID + "/patientSSID/"+p.getSsid()+"/updatepatient";
-//           new UpdatePatient(p).execute(url);
             updatePatient(p);
         } else {
             Utils.closeWaitDialog();
-            savePatientToMobileDB(p);
         }
     }
 
@@ -289,51 +285,65 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void updatePatient(PatientModel p) {
         String userID = new SharedPreference(ProfileActivity.this).getUserID();
-
         RetrofitClient retrofit = new RetrofitClient();
         Retrofit retrofitClient = retrofit.getRetrofitInstance(this);
         if (retrofitClient == null) {
             return;
         }
         boolean isNetworkConnected = isNetworkConnected();
-
-        Call<RegisterUserResponse> call = retrofitClient.create(ServiceApi.class).updatePatient(userID,p.getSsid(),p);
-        call.enqueue(new Callback<RegisterUserResponse>() {
-            @Override
-            public void onResponse(Call<RegisterUserResponse> call, Response<RegisterUserResponse> response) {
-
-                boolean isUpdated = false;
-                try {
-                    isUpdated = databaseHelper.updatePatients(p, isNetworkConnected);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                if (isUpdated) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(ProfileActivity.this, com.hbb20.R.style.Widget_AppCompat_ButtonBar_AlertDialog));
-                    builder.setMessage("Member Data Updated");
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            // Database has already been updated, no need to do anything here
-                            finish();
+        if(Utils.isConnected(this)){
+            Call<RegisterUserResponse> call = retrofitClient.create(ServiceApi.class).updatePatient(userID,p.getSsid(),p);
+            call.enqueue(new Callback<RegisterUserResponse>() {
+                @Override
+                public void onResponse(Call<RegisterUserResponse> call, Response<RegisterUserResponse> response) {
+                    if(response.isSuccessful()){
+                        boolean isUpdated = false;
+                        try {
+                            isUpdated = databaseHelper.updatePatients(p, isNetworkConnected);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    });
-                    builder.show();
-                }
-                else {
-                    // Show a "No Internet" message if network is not connected
-                    if (!isNetworkConnected) {
-                        Toast.makeText(ProfileActivity.this, "No Internet", Toast.LENGTH_SHORT).show();
+                        if (isUpdated) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(ProfileActivity.this, com.hbb20.R.style.Widget_AppCompat_ButtonBar_AlertDialog));
+                            builder.setMessage("Member Data Updated");
+                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    // Database has already been updated, no need to do anything here
+                                    startActivity(new Intent(ProfileActivity.this,PatientSearchActivity.class));
+                                    finish();
+                                }
+                            });
+                            builder.show();
+                        }
+                        else {
+                            // Show a "No Internet" message if network is not connected
+                            if (!isNetworkConnected) {
+                                Toast.makeText(ProfileActivity.this, "No Internet", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }else{
+
                     }
+
+
                 }
-            }
 
-            @Override
-            public void onFailure(Call<RegisterUserResponse> call, Throwable t) {
+                @Override
+                public void onFailure(Call<RegisterUserResponse> call, Throwable t) {
 
-            }
-        });
+                }
+            });
+        }else{
+            //nointernet
+        }
+
+
+
+
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

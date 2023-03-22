@@ -13,11 +13,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.iorbit.iorbithealthapp.Adapters.PatientListAdapter;
@@ -26,7 +24,6 @@ import com.iorbit.iorbithealthapp.Helpers.SessionManager.SharedPreference;
 import com.iorbit.iorbithealthapp.Helpers.Utils.Utils;
 import com.iorbit.iorbithealthapp.Models.GetPatientModel;
 import com.iorbit.iorbithealthapp.Models.PatientModel;
-import com.iorbit.iorbithealthapp.Network.Connectivity;
 import com.iorbit.iorbithealthapp.Network.RetrofitClient;
 import com.iorbit.iorbithealthapp.Network.ServiceApi;
 import com.iorbit.iorbithealthapp.R;
@@ -34,7 +31,6 @@ import com.iorbit.iorbithealthapp.R;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -83,6 +79,7 @@ public class PatientSearchActivity extends AppCompatActivity {
                 Intent intent = new Intent(PatientSearchActivity.this, ProfileActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("patienssid",patientModel.getSsid());
                 startActivity(intent);
+                finish();
             }
         });
         recyclerView.setAdapter(adapter);
