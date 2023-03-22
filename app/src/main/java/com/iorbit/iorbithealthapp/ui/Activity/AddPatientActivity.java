@@ -69,6 +69,19 @@ public class AddPatientActivity extends AppCompatActivity {
             }
         });
 
+        activityAddPatientBinding.more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (activityAddPatientBinding.moreInfo.getVisibility() == View.GONE) {
+                    activityAddPatientBinding.more.setText("- Less Information");
+                    activityAddPatientBinding.moreInfo.setVisibility(View.VISIBLE);
+                } else {
+                    activityAddPatientBinding.more.setText("+ More Information");
+                    activityAddPatientBinding.moreInfo.setVisibility(View.GONE);
+                }
+            }
+        });
+
         activityAddPatientBinding.bSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,14 +129,15 @@ public class AddPatientActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        a.put("O +", 0);
-        a.put("O -", 1);
-        a.put("A +", 2);
-        a.put("A -", 3);
-        a.put("B +", 4);
-        a.put("B -", 5);
-        a.put("AB +", 6);
-        a.put("AB -", 7);
+        a.put(" ", 0);
+        a.put("O +ve", 1);
+        a.put("O -ve", 2);
+        a.put("A +ve", 3);
+        a.put("A -ve", 4);
+        a.put("B +ve", 5);
+        a.put("B -ve", 6);
+        a.put("AB +ve", 7);
+        a.put("AB -ve", 8);
         a.put("", -1);
     }
 

@@ -119,16 +119,16 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        a.put("O +ve", 0);
-        a.put("O -ve", 1);
-        a.put("A +ve", 2);
-        a.put("A -ve", 3);
-        a.put("B +ve", 4);
-        a.put("B -ve", 5);
-        a.put("AB +ve", 6);
-        a.put("AB -ve", 7);
+        a.put(" ", 0);
+        a.put("O +ve", 1);
+        a.put("O -ve", 2);
+        a.put("A +ve", 3);
+        a.put("A -ve", 4);
+        a.put("B +ve", 5);
+        a.put("B -ve", 6);
+        a.put("AB +ve", 7);
+        a.put("AB -ve", 8);
         a.put("", -1);
-
         if (extras != null) {
             if(extras.containsKey("PatientEditDetailsDetails"))
             {
